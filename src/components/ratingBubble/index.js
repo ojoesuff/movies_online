@@ -20,8 +20,9 @@ const determineBgColour = (rating) => {
 
 const RatingBubble = (props) => {
 
-    const rating = 8.1
+    const rating = props.rating ? props.rating : 7.9
     const classes = useStyles(rating);  
+    console.log(props)
 
     return (
         <Avatar className={classes.bubble}>
