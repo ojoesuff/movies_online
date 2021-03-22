@@ -1,4 +1,5 @@
 import MovieCard from "../components/movieCard";
+import Header from "../components/header";
 import { useEffect, useState } from 'react';
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
 
   return (
     <>
+    <Header></Header>
       {movieList ? (
         <>
           <div className="App">

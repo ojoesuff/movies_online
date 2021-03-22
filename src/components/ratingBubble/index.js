@@ -4,13 +4,14 @@ import { Avatar } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
     bubble: {
-      backgroundColor: (rating) => determineBgColour(rating),
+      backgroundColor: (rating) =>  `rgb(${determineBgColour(rating)})`,
       color: "white"
     }
 }));
 
 const determineBgColour = (rating) => {
-    const [badRatingColour, mediumRatingColour, highRatingColour, defaultColour] = ["red", "orange", "green", "grey"];
+    // const [badRatingColour, mediumRatingColour, highRatingColour, defaultColour] = ["red", "orange", "green", "grey"];
+    const [badRatingColour, mediumRatingColour, highRatingColour, defaultColour] = ["242, 92, 92", "245, 172, 76", "78, 217, 113", "219, 219, 219"];
     const [badRatingMax, mediumRatingMax, highRatingMax] = [5.0, 6.5, 10.0];
     
     return rating <= badRatingMax ? badRatingColour :
