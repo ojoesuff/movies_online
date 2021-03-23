@@ -1,6 +1,10 @@
 import MovieCard from "../components/movieCard";
+import MovieList from "../components/movieList";
 import Header from "../components/header";
 import { useEffect, useState } from 'react';
+import { ThemeProvider } from '@material-ui/core/styles';
+import { orangeTheme, greenTheme } from "../themes";
+import CssBaseline from '@material-ui/core/CssBaseline';
 
 function App() {
   const [movies, setMovies] = useState([])
@@ -22,19 +26,11 @@ function App() {
   })
 
   return (
-    <>
-    <Header></Header>
-      {movieList ? (
-        <>
-          <div className="App">
-            <h1>Movies</h1> 
-            {movieList}
-          </div>
-        </>
-      ) : (
-        <h2>Waiting for API data</h2>
-      )}
-    </>
+    <ThemeProvider theme={orangeTheme}>
+      <CssBaseline />
+      <Header></Header>
+      <MovieList></MovieList>
+    </ThemeProvider>
   );
 }
 

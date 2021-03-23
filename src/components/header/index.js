@@ -15,7 +15,7 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 const useStyles = makeStyles((theme) => ({
   title: {
     flexGrow: 1,
-    fontFamily: 'Ranchers',
+    fontFamily: 'Bebas Neue',
   },
   offset: theme.mixins.toolbar,
 }));
@@ -46,8 +46,8 @@ const SiteHeader = ( { history }) => {
     <>
       <AppBar position="fixed" color="primary">
         <Toolbar>
-          <Typography variant="h4" className={classes.title}>
-            Films ONLINE
+          <Typography variant="h3" className={classes.title}>
+            Film<span style={{color: "red"}}>Finder</span>
           </Typography>
             {isMobile ? (
               <>
