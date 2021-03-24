@@ -17,10 +17,10 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     fontFamily: 'Bebas Neue',
   },
-  offset: theme.mixins.toolbar,
+  header: theme.mixins.toolbar,
 }));
 
-const SiteHeader = ( { history }) => {
+const Header = ( { history }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -44,7 +44,7 @@ const SiteHeader = ( { history }) => {
 
   return (
     <>
-      <AppBar position="fixed" color="primary">
+      <AppBar position="fixed" color="primary" className={classes.header}>
         <Toolbar>
           <Typography variant="h3" className={classes.title}>
             Film<span style={{color: "red"}}>Finder</span>
@@ -104,4 +104,4 @@ const SiteHeader = ( { history }) => {
   );
 };
 
-export default SiteHeader
+export default Header

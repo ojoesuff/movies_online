@@ -1,6 +1,7 @@
 import MovieCard from "../components/movieCard";
 import MovieList from "../components/movieList";
 import Header from "../components/header";
+import TemplatePage from "../components/templatePage";
 import { useEffect, useState } from 'react';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { orangeTheme, greenTheme } from "../themes";
@@ -19,7 +20,7 @@ function App() {
       setMovies(movies);
     }); 
     // eslint-disable-next-line react-hooks/exhaustive-deps   
-  }, []);
+  }, []);  
 
   const movieList = movies.map(movie => {
     return <MovieCard movie={movie}></MovieCard>
@@ -28,8 +29,9 @@ function App() {
   return (
     <ThemeProvider theme={orangeTheme}>
       <CssBaseline />
-      <Header></Header>
-      <MovieList></MovieList>
+      <TemplatePage
+        component={<MovieList/>}
+      />
     </ThemeProvider>
   );
 }
