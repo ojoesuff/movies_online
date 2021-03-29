@@ -1,10 +1,9 @@
 import MovieCard from "../components/movieCard";
 import MovieList from "../components/movieList";
-import Header from "../components/header";
 import TemplatePage from "../components/templatePage";
 import { useEffect, useState } from 'react';
 import { ThemeProvider } from '@material-ui/core/styles';
-import { orangeTheme, greenTheme } from "../themes";
+import { mainTheme } from "../themes";
 import CssBaseline from '@material-ui/core/CssBaseline';
 
 function App() {
@@ -27,7 +26,7 @@ function App() {
   })
 
   return (
-    <ThemeProvider theme={orangeTheme}>
+    <ThemeProvider theme={mainTheme}>
       <CssBaseline />
       <TemplatePage
         component={<MovieList/>}

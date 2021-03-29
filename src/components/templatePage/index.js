@@ -2,6 +2,7 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Footer from "../footer";
 import Header from "../header";
+import FilterSideBar from "../filterSideBar";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -21,6 +22,7 @@ const TemplatePage = (props) => {
   return (
     <>
         <Header />
+        <FilterSideBar />
         {props.component}
         <Footer />      
     </>

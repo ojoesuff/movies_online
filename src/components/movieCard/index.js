@@ -10,26 +10,33 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import RatingBubble from "../ratingBubble";
 import img from '../../images/batman.jpg'
 import { CardActions } from '@material-ui/core';
+import { red, grey } from '@material-ui/core/colors';
 
 
 const useStyles = makeStyles((theme) => ({
     card: {
       maxWidth: 250,
-      background: theme.palette.primary.main
     },
     media: {
       height: 250,
-    }   
+    },
+    favourite: {
+        color: (isFavourite) => favouriteColour(isFavourite)[500],
+    }
+
 }));
+
+const favouriteColour = (isFavourite) => {
+    return isFavourite ? red : grey;
+};
 
 const MovieCard = (props) => {
 
-    const rating = 7.9
+    const rating = 7.1
     const year = "2021"
     const title = "The Dark Night Rises"
-    const classes = useStyles();
-    const isFavourite = true;
-    const favouriteColour = isFavourite ? "red" : "secondary";
+    const isFavourite = false;
+    const classes = useStyles(isFavourite);   
 
     return (
         <Card className={classes.card}>                    
@@ -51,7 +58,7 @@ const MovieCard = (props) => {
             <CardActions style={{paddingTop: 0}}>  
                 <RatingBubble rating={rating}></RatingBubble>
                 <IconButton>
-                    <FavoriteIcon style={{color:`${favouriteColour}`}} fontSize="large"                    
+                    <FavoriteIcon className={classes.favourite} fontSize="large"                    
                     />
                 </IconButton>                
             </CardActions>          

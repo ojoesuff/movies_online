@@ -17,7 +17,6 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     fontFamily: 'Bebas Neue',
   },
-  header: theme.mixins.toolbar,
 }));
 
 const Header = ( { history }) => {
@@ -44,7 +43,7 @@ const Header = ( { history }) => {
 
   return (
     <>
-      <AppBar position="fixed" color="primary" className={classes.header}>
+      <AppBar position="fixed" color="primary">
         <Toolbar>
           <Typography variant="h3" className={classes.title}>
             Film<span style={{color: "red"}}>Finder</span>

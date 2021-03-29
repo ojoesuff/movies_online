@@ -1,11 +1,27 @@
 import MovieCard from "../movieCard";
+import FilterSideBar from "../filterSideBar";
 import Grid from '@material-ui/core/Grid';
+import { makeStyles } from "@material-ui/core/styles";
 
+
+const useStyles = makeStyles((theme) => ({
+    toolbar: {
+        paddingTop: "5px",
+        overflow: "hidden",
+        ...theme.mixins.toolbar,
+        marginLeft: 250,
+        width: "80%",
+    }
+  }));
 
 const MovieList = (props) => {
 
+    const classes = useStyles();
+
     return (
-            <Grid container spacing={2}>
+    <>
+            <div className={classes.toolbar} />
+            <Grid container spacing={2} className={classes.toolbar}>
             <Grid item>
                 <MovieCard></MovieCard> 
             </Grid>
@@ -43,6 +59,8 @@ const MovieList = (props) => {
                 <MovieCard></MovieCard> 
             </Grid>
         </Grid>
+        <div className={classes.toolbar} />
+        </>
         
     )
 }
