@@ -8,7 +8,6 @@ const useStyles = makeStyles((theme) => ({
     toolbar: {
         paddingTop: "5px",
         overflow: "hidden",
-        ...theme.mixins.toolbar,
         marginLeft: 250,
         width: "80%",
     }

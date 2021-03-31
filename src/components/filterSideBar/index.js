@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Badge, Checkbox, Container, FormControl, Input, InputLabel, ListItemText, MenuItem, Select, Slider, TextField, Typography } from '@material-ui/core';
+import { Badge, Checkbox, Container, FormControl, FormControlLabel, Input, InputLabel, ListItemText, MenuItem, Select, Slider, TextField, Typography } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
     leftSideBar: {   
@@ -12,10 +12,10 @@ const useStyles = makeStyles((theme) => ({
       zIndex: 1,
     },
     content: {
-        ...theme.mixins.toolbar,
+        paddingTop: 5,
     },
     input: {
-      margin: 10,
+      marginBottom: 7,
       minWidth: 120,
       maxWidth: 300, 
     },
@@ -39,7 +39,7 @@ const MenuProps = {
 function getStyles(genre, genres, theme) {
   return {
     fontWeight:
-      personName.indexOf(name) === -1
+      genres.indexOf(genre) === -1
         ? theme.typography.fontWeightRegular
         : theme.typography.fontWeightMedium,
   };
@@ -51,7 +51,8 @@ const genres = ["Action", "Adventure", "Animation", "Bollywood", "Cartoon", "Fam
 
 const FilterSideBar = (props) => {
     const classes = useStyles(); 
-    const [value, setValue] = useState([1917, 2021]);
+    const [year, setYear] = useState([1917, 2021]);
+    const [rating, setRating] = useState([0.0, 10.0])
 
     const handleChange = (e, type, value) => {
       e.preventDefault()
@@ -64,16 +65,25 @@ const FilterSideBar = (props) => {
       handleChange(e, "genre", e.target.value)
     };  
     const handleYearChange = (event, newValue) => {
-      setValue(newValue);
+      setYear(newValue);
+    };
+    const handleRatingChange = (event, newValue) => {
+      setRating(newValue);
+    };
+    const handleAdultChange = (event, newValue) => {
+      return
     };
 
     return (
-       <Container className={classes.leftSideBar}>
+       <Container className={classes.leftSideBar}>         
            <div className={classes.content} />
+           <Typography variant="h4" gutterBottom>
+            Filter
+          </Typography>
            <form noValidate autoComplete="off">
-            <TextField  className={classes.input} label="Title" variant="outlined" />
+            <TextField className={classes.input} label="Title" variant="outlined" />
             <FormControl>
-              <InputLabel className={classes.input} id="genre-input-label">Genre</InputLabel>
+              <InputLabel  id="genre-input-label">Genre</InputLabel>
               <Badge badgeContent={1} className={classes.badge} color="primary">
               </Badge>
               <Select
@@ -95,21 +105,31 @@ const FilterSideBar = (props) => {
                 ))}
               </Select>              
             </FormControl>
-            <div>
-            <Typography id="year-slider">
-              Year
-            </Typography>
+            <InputLabel id="year-slider">Year</InputLabel>
             <Slider
               className={classes.input}
-              value={value}
+              value={year}
               min={1917}
               max={2021}
               onChange={handleYearChange}
               valueLabelDisplay="auto"
               aria-labelledby="year-slider"
-            />  
-            </div>
-                      
+            />    
+            <InputLabel id="rating-slider">Rating</InputLabel>
+            <Slider
+              className={classes.input}
+              value={rating}
+              min={0.0}
+              max={10.0}
+              step={0.1}
+              onChange={handleRatingChange}
+              valueLabelDisplay="auto"
+              aria-labelledby="rating-slider"
+            /> 
+            <FormControlLabel
+              control={<Checkbox checked={true} onChange={handleAdultChange} name="adult" color="primary"/>}
+              label="Adult"
+            />                    
           </form>          
        </Container>
     );
