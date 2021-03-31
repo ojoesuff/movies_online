@@ -1,6 +1,6 @@
 import MovieCard from "../components/movieCard";
 import MovieList from "../components/movieList";
-import TemplatePage from "../components/templatePage";
+import TemplateMoviePage from "../components/templateMoviePage";
 import { useEffect, useState } from 'react';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { mainTheme } from "../themes";
@@ -28,7 +28,7 @@ function App() {
   return (
     <ThemeProvider theme={mainTheme}>
       <CssBaseline />
-      <TemplatePage
+      <TemplateMoviePage
         component={<MovieList/>}
       />
     </ThemeProvider>
