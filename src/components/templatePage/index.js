@@ -23,7 +23,7 @@ const TemplatePage = (props) => {
     <>
         <Header />
         <FilterSideBar />
-        {props.component}
+        {props.children}
         <Footer />      
     </>
   );

@@ -6,9 +6,8 @@ const TemplatMoviePage = (props) => {
 
   return (
     <>
-        <TemplatePage component={
-            <MovieList></MovieList>
-        }>            
+        <TemplatePage>
+          <MovieList></MovieList>         
         </TemplatePage>    
     </>
   );

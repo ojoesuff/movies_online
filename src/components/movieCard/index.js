@@ -11,6 +11,7 @@ import RatingBubble from "../ratingBubble";
 import img from '../../images/batman.jpg'
 import { CardActions } from '@material-ui/core';
 import { red, grey } from '@material-ui/core/colors';
+import { Textfit } from 'react-textfit';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -22,6 +23,10 @@ const useStyles = makeStyles((theme) => ({
     },
     favourite: {
         color: (isFavourite) => favouriteColour(isFavourite)[500],
+    },
+    title: {
+        minHeight: 80,
+        maxHeight: 200,
     }
 
 }));
@@ -30,33 +35,39 @@ const favouriteColour = (isFavourite) => {
     return isFavourite ? red : grey;
 };
 
+const getYear = date => {
+    return new Date(date).getFullYear()
+}
+
 const MovieCard = (props) => {
 
-    const rating = 7.1
-    const year = "2021"
-    const title = "The Dark Night Rises"
     const isFavourite = false;
-    const classes = useStyles(isFavourite);   
+    const classes = useStyles(isFavourite); 
+    const movie = props.movie  
 
     return (
         <Card className={classes.card}>                    
         <CardActionArea style={{paddingBottom: 0}}>
             <CardMedia
                 className={classes.media}
-                image={img}
-                title={title}
+                image={
+                    movie.poster_path
+                      ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}`
+                      : img
+                  }
+                title={movie.title}
             /> 
             <CardContent style={{paddingBottom:0}}>
-            <Typography style={{fontWeight:"bold"}} variant="h5">
-                {title}
-            </Typography>
-            <Typography style={{fontWeight:"lighter"}} variant="h5">
-                {year}
+            <Textfit mode="multi" className={classes.title} max={30}>
+                {movie.title}
+            </Textfit>
+            <Typography style={{fontWeight:"bold"}} variant="h4">
+                {getYear(movie.release_date)}
             </Typography>
             </CardContent>
             </CardActionArea>  
             <CardActions style={{paddingTop: 0}}>  
-                <RatingBubble rating={rating}></RatingBubble>
+                <RatingBubble rating={movie.vote_average}></RatingBubble>
                 <IconButton>
                     <FavoriteIcon className={classes.favourite} fontSize="large"                    
                     />
