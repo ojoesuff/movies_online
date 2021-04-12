@@ -5,8 +5,8 @@ import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
 import {mainTheme} from "./themes"
 import MoviesContextProvider from "./contexts/moviesContext";
-import Home from "./pages/home";
-import MovieDetailsPage from "./pages/movieDetails"
+import Home from "./pages/homePage";
+import MovieDetailsPage from "./pages/movieDetailsPage"
 
 
 const App = () => {

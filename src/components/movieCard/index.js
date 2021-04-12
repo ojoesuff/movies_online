@@ -12,6 +12,7 @@ import img from '../../images/batman.jpg'
 import { CardActions } from '@material-ui/core';
 import { red, grey } from '@material-ui/core/colors';
 import { Textfit } from 'react-textfit';
+import {getYear} from '../../utilities'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -34,10 +35,6 @@ const useStyles = makeStyles((theme) => ({
 const favouriteColour = (isFavourite) => {
     return isFavourite ? red : grey;
 };
-
-const getYear = date => {
-    return new Date(date).getFullYear()
-}
 
 const MovieCard = (props) => {
 

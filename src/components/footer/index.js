@@ -5,7 +5,6 @@ import TwitterIcon from '@material-ui/icons/Twitter';
 import YouTubeIcon from '@material-ui/icons/YouTube';
 import InstagramIcon from '@material-ui/icons/Instagram';
 import FacebookIcon from '@material-ui/icons/Facebook';
-import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   footer: {

@@ -6,6 +6,7 @@ import MovieList from "../src/components/movieList";
 import Header from "../src/components/header";
 import Footer from "../src/components/footer";
 import FilterSideBar from "../src/components/filterSideBar";
+import MovieDetail from "../src/components/movieDetail";
 
 storiesOf("Static", module)
   .add("Rating Bubble", () => {
@@ -25,4 +26,7 @@ storiesOf("Static", module)
   })
   .add("FilterSideBar", () => {
     return <FilterSideBar />;
+  })
+  .add("MovieDetail", () => {
+    return <MovieDetail />;
   })
