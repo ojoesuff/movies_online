@@ -12,7 +12,8 @@ import img from '../../images/batman.jpg'
 import { CardActions } from '@material-ui/core';
 import { red, grey } from '@material-ui/core/colors';
 import { Textfit } from 'react-textfit';
-import {getYear} from '../../utilities'
+import {getYear} from '../../utilities';
+import { withRouter } from "react-router-dom";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -36,15 +37,22 @@ const favouriteColour = (isFavourite) => {
     return isFavourite ? red : grey;
 };
 
-const MovieCard = (props) => {
+const MovieCard = ({ movie, history }) => {
+
+    const handleNavigation = (url) => {
+        history.push(url);
+      };
+
 
     const isFavourite = false;
-    const classes = useStyles(isFavourite); 
-    const movie = props.movie  
+    const classes = useStyles(isFavourite);  
 
     return (
         <Card className={classes.card}>                    
-        <CardActionArea style={{paddingBottom: 0}}>
+        <CardActionArea 
+            onClick={() => handleNavigation(`/movies/${movie.id}`)}
+            style={{paddingBottom: 0}}
+            >
             <CardMedia
                 className={classes.media}
                 image={
@@ -74,4 +82,4 @@ const MovieCard = (props) => {
     )
 }
 
-export default MovieCard
+export default withRouter(MovieCard);

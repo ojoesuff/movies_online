@@ -24,7 +24,6 @@ const RatingBubble = (props) => {
 
     const rating = props.rating ? props.rating : 7.9
     const classes = useStyles(rating);  
-    console.log(props)
 
     return (
         <Avatar className={classes.bubble}>
