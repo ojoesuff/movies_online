@@ -21,16 +21,14 @@ const MovieDetailsPage = ({
     },
   }) => {
 
-    const movie = useMovie(id)
+    const [movie] = useMovie(id)
     const classes = useStyles();
-    const backgroundImagePath = "/7prYzufdIOy1KCTZKVWpjBFqqNr.jpg"
-    const backgroundUrl = `url(https://image.tmdb.org/t/p/original/${backgroundImagePath})`
 
     return (
         <>
         {movie ? (
         <TemplatePage>
-        <div className={classes.background} style={{backgroundImage:`${backgroundUrl}`}}>
+        <div className={classes.background} style={{backgroundImage:`url(https://image.tmdb.org/t/p/original/${movie.backdrop_path})`}}>
             <MovieDetail movie={movie}/>
         </div>
         </TemplatePage> 
