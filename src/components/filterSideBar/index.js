@@ -1,6 +1,9 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Badge, Checkbox, Container, FormControl, FormControlLabel, Input, InputLabel, ListItemText, MenuItem, Select, Slider, TextField, Typography } from '@material-ui/core';
+import { Badge, Checkbox, Container, FormControl, FormControlLabel, 
+  Input, InputLabel, ListItemText, MenuItem, Select, 
+  Slider, TextField } from '@material-ui/core';
+import { GenresContext } from '../../contexts/genresContext'
 
 const useStyles = makeStyles((theme) => ({
     leftSideBar: {   
@@ -17,42 +20,21 @@ const useStyles = makeStyles((theme) => ({
     input: {
       marginBottom: 7,
       minWidth: 120,
-      maxWidth: 300, 
+      maxWidth: 200, 
     },
-    badge: {
-      right: 3,
-      top: 13,
-    }
   }));
-
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
-};
-
-function getStyles(genre, genres, theme) {
-  return {
-    fontWeight:
-      genres.indexOf(genre) === -1
-        ? theme.typography.fontWeightRegular
-        : theme.typography.fontWeightMedium,
-  };
-}
 
 const yearSliderValue = [1917, 2021]
 
-const genres = ["Action", "Adventure", "Animation", "Bollywood", "Cartoon", "Family", "Horror", "Thriller"];
-
 const FilterSideBar = (props) => {
+    const context = useContext(GenresContext);
+    const { genres } = context;
     const classes = useStyles(); 
     const [year, setYear] = useState([1917, 2021]);
     const [rating, setRating] = useState([0.0, 10.0])
+    const [selectedGenres, setGenre] = useState([])
+
+    console.log(selectedGenres)
 
     const handleChange = (e, type, value) => {
       e.preventDefault()
@@ -62,6 +44,7 @@ const FilterSideBar = (props) => {
       handleChange(e, "name", e.target.value)
     }
     const handleGenreChange = e => {
+      setGenre(e.target.value)
       handleChange(e, "genre", e.target.value)
     };  
     const handleYearChange = (event, newValue) => {
@@ -77,36 +60,40 @@ const FilterSideBar = (props) => {
     return (
        <Container className={classes.leftSideBar}>         
            <div className={classes.content} />
-           <Typography variant="h4" gutterBottom>
-            Filter
-          </Typography>
            <form noValidate autoComplete="off">
-            <TextField className={classes.input} label="Title" variant="outlined" />
-            <FormControl>
-              <InputLabel  id="genre-input-label">Genre</InputLabel>
-              <Badge badgeContent={1} className={classes.badge} color="primary">
-              </Badge>
+            <TextField 
+              className={classes.input} 
+              label="Title" 
+              variant="outlined" 
+              type="search"
+              onChange={handleTextChange}
+              value={props.titleFilter}
+            />
+            <FormControl>              
+              <Badge badgeContent={selectedGenres.length} className={classes.badge} color="primary">
+              <InputLabel id="genre-input-label">Genre</InputLabel>
               <Select
                 className={classes.input}
                 labelId="genre-input-label"  
                 autoWidth              
                 multiple
-                value={genres}
+                value={selectedGenres}
                 onChange={handleGenreChange}
+                renderValue={() => selectedGenres.join(', ')}
                 input={<Input />}
-                renderValue={(selected) => ''}
-                // MenuProps={MenuProps}
               >
                 {genres.map((genre) => (
-                  <MenuItem key={genre} value={genre}>
-                    <Checkbox checked={false} />
-                    <ListItemText primary={genre} />
+                  <MenuItem key={genre.id} value={genre.id}>
+                    <Checkbox checked={selectedGenres.includes(genre.id)} />
+                    <ListItemText primary={genre.name} />
                   </MenuItem>
                 ))}
-              </Select>              
+              </Select> 
+              </Badge>                           
             </FormControl>
             <InputLabel id="year-slider">Year</InputLabel>
             <Slider
+              labelId="year-slider"
               className={classes.input}
               value={year}
               min={1917}

@@ -1,9 +1,6 @@
 import MovieCard from "../movieCard";
-import FilterSideBar from "../filterSideBar";
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from "@material-ui/core/styles";
-import { useContext } from "react";
-import { MoviesContext } from "../../contexts/moviesContext";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -15,11 +12,9 @@ const useStyles = makeStyles((theme) => ({
     }
   }));
 
-const MovieList = (props) => {
-
+const MovieList = ({ movies }) => {
     const classes = useStyles();
-    const context = useContext(MoviesContext)
-    const movies = context.movies.map(movie => {
+    const filteredMovies = movies.map(movie => {
         return (
             <Grid item key={movie.id} xs={12} sm={6} md={4} lg={3} xl={2}>
                 <MovieCard
@@ -28,12 +23,12 @@ const MovieList = (props) => {
             </Grid>
         )
     })
-
+    
     return (
     <>
         <div className={classes.toolbar} />
             <Grid container spacing={2} className={classes.toolbar}>
-            {movies}
+            {filteredMovies}
             </Grid>
         <div className={classes.toolbar} />
     </>

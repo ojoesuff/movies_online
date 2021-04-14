@@ -16,11 +16,10 @@ const useStyles = makeStyles((theme) => ({
     },
     poster: {
         minWidth: 100,
-        minHeight: 200,
-        backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",
         border: '1px solid',
+        height: "100%",
     },
     title: {
         [theme.breakpoints.down('lg')]: {
@@ -57,6 +56,7 @@ const MovieDetail = ({ movie }) => {
                 <Grid item lg={8} md={8} sm={12} xs={12}>
                     <Paper className={classes.paper}>
                         <Typography className={classes.title}>{movie.original_title} {year}</Typography>
+                        <Divider/>
                         <Typography className={classes.subtitle}variant="subtitle1">{movie.tagline.toUpperCase()}</Typography>
                         <Typography variant="body1">{movie.overview}</Typography>
                         <IconButton href={movie.homepage} target="_blank">

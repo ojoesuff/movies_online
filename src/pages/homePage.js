@@ -1,10 +1,15 @@
+import { useContext } from "react";
 import TemplateMoviePage from "../components/templateMoviePage";
-import Theme from "../components/theme";
+import { MoviesContext } from "../contexts/moviesContext";
 
-function App() {
+function HomePage() {
+  const context = useContext(MoviesContext);
+  const { movies  } = context;
+
   return (
-    <TemplateMoviePage />
+    <TemplateMoviePage movies={movies}>
+    </TemplateMoviePage>
   );
 }
 
-export default App;
+export default HomePage;
