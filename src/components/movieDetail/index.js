@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Divider, Grid, IconButton, Paper, Typography } from "@material-ui/core";
+import { Accordion, AccordionDetails, AccordionSummary, Avatar, ButtonBase, Divider, Grid, IconButton, Paper, Typography } from "@material-ui/core";
 import {getYear, releaseDateFormat} from "../../utilities"
 import LanguageIcon from '@material-ui/icons/Language';
 import RatingBubble from "../ratingBubble";
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import { getMovieReviews } from '../../api/tmdb'
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -39,15 +42,30 @@ const useStyles = makeStyles((theme) => ({
     topMargin: {
         marginTop: theme.spacing(2),
     },
+    avatar: {
+        width: theme.spacing(3),
+        height: theme.spacing(3),
+    }
   }));
 
+const reviewCharDisplayLimit = 300;
+
+const previewReview = (fullReview) => {
+    return fullReview.substring(0, reviewCharDisplayLimit)
+}
+
 const MovieDetail = ({ movie }) => {
-    console.log(movie)
+    const [reviews, setReviews] = useState();    
     const classes = useStyles();
     const posterImagePath = movie.poster_path
     const posterUrl = `url(https://image.tmdb.org/t/p/w500/${posterImagePath})`
     const releaseDate = movie.release_date
     const year = getYear(releaseDate)
+
+    useEffect(() => 
+        getMovieReviews(movie.id)
+        .then(reviews => setReviews(reviews))
+    );
 
     return (
         <>
@@ -85,7 +103,31 @@ const MovieDetail = ({ movie }) => {
                         ))}
                         </div>                       
                     </Paper>
-                </Grid>                                
+                </Grid> 
+                <Grid item lg={8} md={8} sm={12} xs={12}>
+                    <Accordion style={{opacity:0.9}}>
+                        <AccordionSummary
+                            expandIcon={<ExpandMoreIcon/>}
+                        >
+                            <Typography>Reviews</Typography>
+                        </AccordionSummary>                         
+                            {reviews ? reviews.map(review =>
+                            <ButtonBase>
+                            <AccordionDetails align="left" style={{display: "inline-block"}}>
+                                <Avatar className={classes.avatar} alt={review.author.toUpperCase()} src={`https://image.tmdb.org/t/p/w200/${review.avatar_path}`} />
+                                <Typography variant="h6">{review.author}</Typography>
+                                <Divider/>
+                                <Typography>{previewReview(review.content)}</Typography>                                
+                            </AccordionDetails>
+                            </ButtonBase>
+                            
+                            ) : 
+                            <AccordionDetails>
+                                <Typography>No reviews available</Typography>
+                            </AccordionDetails>
+                            } 
+                    </Accordion>
+                </Grid>                            
             </Grid>
             </div>
         </>
