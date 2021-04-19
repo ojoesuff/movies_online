@@ -24,8 +24,6 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-const yearSliderValue = [1917, 2021]
-
 const FilterSideBar = (props) => {
     const context = useContext(GenresContext);
     const { genres } = context;
@@ -33,11 +31,11 @@ const FilterSideBar = (props) => {
     const [year, setYear] = useState([1917, 2021]);
     const [rating, setRating] = useState([0.0, 10.0])
     const [selectedGenres, setGenre] = useState([])
+    const [adultChecked, setAdultChecked] = useState(false);
 
-    console.log(selectedGenres)
 
     const handleChange = (e, type, value) => {
-      e.preventDefault()
+      // e.preventDefault()
       props.onUserInput(type, value)
     }
     const handleTextChange = e => {
@@ -47,14 +45,13 @@ const FilterSideBar = (props) => {
       setGenre(e.target.value)
       handleChange(e, "genre", e.target.value)
     };  
-    const handleYearChange = (event, newValue) => {
+    const handleYearChange = (e, newValue) => {
       setYear(newValue);
+      handleChange(e, "year", newValue)
     };
-    const handleRatingChange = (event, newValue) => {
+    const handleRatingChange = (e, newValue) => {
       setRating(newValue);
-    };
-    const handleAdultChange = (event, newValue) => {
-      return
+      handleChange(e, "rating", newValue)
     };
 
     return (
@@ -96,8 +93,8 @@ const FilterSideBar = (props) => {
               labelId="year-slider"
               className={classes.input}
               value={year}
-              min={1917}
-              max={2021}
+              min={props.yearRange.min}
+              max={props.yearRange.max}
               onChange={handleYearChange}
               valueLabelDisplay="auto"
               aria-labelledby="year-slider"
@@ -106,16 +103,12 @@ const FilterSideBar = (props) => {
             <Slider
               className={classes.input}
               value={rating}
-              min={0.0}
-              max={10.0}
+              min={props.ratingRange.min}
+              max={props.ratingRange.max}
               step={0.1}
               onChange={handleRatingChange}
               valueLabelDisplay="auto"
               aria-labelledby="rating-slider"
-            /> 
-            <FormControlLabel
-              control={<Checkbox checked={true} onChange={handleAdultChange} name="adult" color="primary"/>}
-              label="Adult"
             />                    
           </form>          
        </Container>
