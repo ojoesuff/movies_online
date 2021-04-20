@@ -7,6 +7,7 @@ import Header from "../src/components/header";
 import Footer from "../src/components/footer";
 import FilterSideBar from "../src/components/filterSideBar";
 import MovieDetail from "../src/components/movieDetail";
+import AddReviewButton from "../src/components/addReviewButton";
 
 storiesOf("Static", module)
   .add("Rating Bubble", () => {
@@ -29,4 +30,7 @@ storiesOf("Static", module)
   })
   .add("MovieDetail", () => {
     return <MovieDetail />;
+  })
+  .add("AddReviewButton", () => {
+    return <AddReviewButton />;
   })

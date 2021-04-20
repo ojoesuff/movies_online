@@ -1,9 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import TemplatePage from "../components/templatePage";
-import useMovie from "../hooks/useMovie"
-import MovieDetail from "../components/movieDetail";
 import { withRouter } from "react-router-dom";
+import FullReview from "../components/fullReview"
 import TemplateDetailsPage from "../components/templateDetailsPage";
 
 const useStyles = makeStyles((theme) => ({
@@ -16,26 +14,26 @@ const useStyles = makeStyles((theme) => ({
     }
   }));
 
-const MovieDetailsPage = ({
-    match: {
-      params: { id },
-    },
-  }) => {
-
-    const [movie] = useMovie(id)
+const MovieReviewPage = ({
+  location: {
+    state: { movie, review },
+  },
+}) => {
 
     return (
         <>
-        {movie ? (
-          <TemplateDetailsPage movie={movie}>
-            <MovieDetail movie={movie}/>
-          </TemplateDetailsPage>
+        {review ? (
+        <TemplateDetailsPage movie={movie}>
+          <FullReview
+            review={review}
+          />
+        </TemplateDetailsPage> 
       ) : (
-        <p>Loading movie details</p>
+        <p>Loading review</p>
       )}
                
         </>
     );
 };
 
-export default withRouter(MovieDetailsPage);
+export default withRouter(MovieReviewPage);

@@ -6,7 +6,8 @@ import LanguageIcon from '@material-ui/icons/Language';
 import RatingBubble from "../ratingBubble";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { getMovieReviews } from '../../api/tmdb'
-import { Link } from "react-router-dom";
+import AddReviewButton from '../addReviewButton'
+import { withRouter } from "react-router";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -48,19 +49,26 @@ const useStyles = makeStyles((theme) => ({
     }
   }));
 
-const reviewCharDisplayLimit = 300;
+const reviewCharDisplayLimit = 400;
 
 const previewReview = (fullReview) => {
     return fullReview.substring(0, reviewCharDisplayLimit)
 }
 
-const MovieDetail = ({ movie }) => {
+const MovieDetail = ({ movie, history }) => {
     const [reviews, setReviews] = useState();    
     const classes = useStyles();
     const posterImagePath = movie.poster_path
     const posterUrl = `url(https://image.tmdb.org/t/p/w500/${posterImagePath})`
     const releaseDate = movie.release_date
     const year = getYear(releaseDate)
+
+    const handleReviewPage = (review) => {
+        history.push({
+            pathname: `/reviews/${review.id}`,
+            state: { movie, review }
+        })
+    }
 
     useEffect(() => 
         getMovieReviews(movie.id)
@@ -110,16 +118,21 @@ const MovieDetail = ({ movie }) => {
                             expandIcon={<ExpandMoreIcon/>}
                         >
                             <Typography>Reviews</Typography>
-                        </AccordionSummary>                         
-                            {reviews ? reviews.map(review =>
-                            <ButtonBase>
-                            <AccordionDetails align="left" style={{display: "inline-block"}}>
-                                <Avatar className={classes.avatar} alt={review.author.toUpperCase()} src={`https://image.tmdb.org/t/p/w200/${review.avatar_path}`} />
+                        </AccordionSummary>    
+                            <AccordionDetails>
+                                <AddReviewButton />
+                            </AccordionDetails>                     
+                            {reviews ? reviews.map(review =>                            
+                            <AccordionDetails  style={{display: "inline-block"}}>
+                                <Avatar alt={review.author.toUpperCase()} src={`https://image.tmdb.org/t/p/w200/${review.author_details.avatar_path}`} />
                                 <Typography variant="h6">{review.author}</Typography>
                                 <Divider/>
-                                <Typography>{previewReview(review.content)}</Typography>                                
+                                <ButtonBase
+                                    onClick={() => handleReviewPage(review)}
+                                >
+                                    <Typography align="left">{`${previewReview(review.content)}...READ MORE...`}</Typography> 
+                                </ButtonBase>                                                               
                             </AccordionDetails>
-                            </ButtonBase>
                             
                             ) : 
                             <AccordionDetails>
@@ -134,4 +147,4 @@ const MovieDetail = ({ movie }) => {
     );
 };
 
-export default MovieDetail;
+export default withRouter(MovieDetail);
