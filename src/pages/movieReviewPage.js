@@ -26,6 +26,7 @@ const MovieReviewPage = ({
         <TemplateDetailsPage movie={movie}>
           <FullReview
             review={review}
+            movie={movie}
           />
         </TemplateDetailsPage> 
       ) : (

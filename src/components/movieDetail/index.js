@@ -6,7 +6,7 @@ import LanguageIcon from '@material-ui/icons/Language';
 import RatingBubble from "../ratingBubble";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { getMovieReviews } from '../../api/tmdb'
-import AddReviewButton from '../addReviewButton'
+import AddReview from '../addReview'
 import { withRouter } from "react-router";
 
 const useStyles = makeStyles((theme) => ({
@@ -120,7 +120,7 @@ const MovieDetail = ({ movie, history }) => {
                             <Typography>Reviews</Typography>
                         </AccordionSummary>    
                             <AccordionDetails>
-                                <AddReviewButton />
+                                <AddReview movie={movie} />
                             </AccordionDetails>                     
                             {reviews ? reviews.map(review =>                            
                             <AccordionDetails  style={{display: "inline-block"}}>
