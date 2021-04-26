@@ -132,14 +132,28 @@ const MovieDetail = ({ movie, history }) => {
                                 >
                                     <Typography align="left">{`${previewReview(review.content)}...READ MORE...`}</Typography> 
                                 </ButtonBase>                                                               
-                            </AccordionDetails>
-                            
-                            ) : 
+                            </AccordionDetails>                            
+                            ) :
                             <AccordionDetails>
                                 <Typography>No reviews available</Typography>
                             </AccordionDetails>
                             } 
+                            {movie.review ? 
+                            <AccordionDetails  style={{display: "inline-block"}}>
+                            <Avatar alt={movie.review.author.toUpperCase()} src={''} />
+                            <Typography variant="h6">{movie.review.author}</Typography>
+                            <Divider/>
+                            <ButtonBase
+                                onClick={() => handleReviewPage(movie.review)}
+                            >
+                                <Typography align="left">{`${previewReview(movie.review.content)}...READ MORE...`}</Typography> 
+                            </ButtonBase>                                                               
+                        </AccordionDetails> : 
+                        <AccordionDetails>
+                            <Typography>No reviews available</Typography>
+                        </AccordionDetails>}
                     </Accordion>
+                    <p>{JSON.stringify(movie, null, 2)}</p>
                 </Grid>                            
             </Grid>
             </div>

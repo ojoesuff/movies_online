@@ -6,7 +6,7 @@ import { AddCircleRounded } from "@material-ui/icons";
 import WarningIcon from '@material-ui/icons/Warning';
 import { useForm } from "react-hook-form";
 import { MoviesContext } from "../../contexts/moviesContext";
-import MuiAlert from "@material-ui/lab/Alert";
+import Alert from "@material-ui/lab/Alert";
 
 const useStyles = makeStyles((theme) => ({
     reviewForm: {
@@ -22,6 +22,9 @@ const useStyles = makeStyles((theme) => ({
     },
     error: {
         color: theme.palette.warning.dark
+    },
+    button: {
+        marginRight: theme.spacing(3)
     }
 }));
 
@@ -31,6 +34,8 @@ const AddReview = ({history, movie}) => {
     const [ snackOpen, setSnackOpen ] = useState(false);
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
     const context = useContext(MoviesContext);
+    const minReviewLength = 10;
+    const snackOpenDuration = 1000;
 
     const handleModalOpen = () => {
         setModalOpen(true);
@@ -42,12 +47,13 @@ const AddReview = ({history, movie}) => {
 
     const handleSnackClose = e => {
         setSnackOpen(false);
-        history.push("/");
+        setModalOpen(false);
+        history.push(`/movies/${movie.id}`)
+        // window.location.reload(false);
       };
 
     const onSubmit = (review) => {
-        review.movieId = movie.id;
-        // review.rating = rating;
+        review.movie_id = movie.id;
         context.addReview(movie, review);
         setSnackOpen(true);
     };
@@ -67,23 +73,24 @@ const AddReview = ({history, movie}) => {
             onClose={handleModalClose}
         >
         <Box className={classes.reviewForm} component="div">
-        <Typography variant="h4">
-            Write a review
+        <Typography variant="h6" color={"primary"}>
+            Submit a Review
         </Typography>
         <Snackbar
+            autoHideDuration={snackOpenDuration}
             anchorOrigin={{ vertical: "top", horizontal: "right" }}
             open={snackOpen}
             onClose={handleSnackClose}
         >
-            <MuiAlert
+            <Alert
             severity="success"
             variant="filled"
             onClose={handleSnackClose}
             >
-            <Typography variant="h4">
-                Thank you for submitting a review
+            <Typography>
+                Review submitted, thank you!
             </Typography>
-            </MuiAlert>
+            </Alert>
         </Snackbar>
         <form
             onSubmit={handleSubmit(onSubmit)}
@@ -91,15 +98,16 @@ const AddReview = ({history, movie}) => {
         >
             <TextField
             variant="outlined"
-            margin="normal"
+            margin="large"
             required
             id="author"
             label="Author"
             name="author"
             autoFocus
-            {...register('authorRequired', { required: "Author is required" })}
+            {...register('author', { 
+                required: "Author is required" })}
             />
-            {errors.authorRequired && (<Typography className={classes.error}><WarningIcon fontSize="small" />{" " + errors.authorRequired.message}</Typography>)}
+            {errors.author && (<Typography className={classes.error}><WarningIcon fontSize="small" />{" " + errors.author.message}</Typography>)}
 
             <TextField
             variant="outlined"
@@ -107,17 +115,19 @@ const AddReview = ({history, movie}) => {
             required
             fullWidth
             name="content"
-            label="Review text"
+            label="Review"
             id="content"
             multiline
             rows={10}
-            {...register('contentRequired', {
-                required: "Review is required"         })}          
+            {...register('content', {
+                required: "Review is required",
+                minLength: minReviewLength  })}          
             />
-            {errors.contentRequired && (<Typography className={classes.error}><WarningIcon fontSize="small" />{" " + errors.contentRequired.message}</Typography>)}
-            {console.log(errors)}
+            {errors.content && errors.content.type == "required" && (<Typography className={classes.error}><WarningIcon fontSize="small" />{" Review is required"}</Typography>)}
+            {errors.content && errors.content.type == "minLength" && (<Typography className={classes.error}><WarningIcon fontSize="small" />{` ${minReviewLength} minimum length`}</Typography>)}
             <Box>
             <Button
+                className={classes.button}
                 type="submit"
                 variant="contained"
                 color="primary"
@@ -125,6 +135,7 @@ const AddReview = ({history, movie}) => {
                 Submit
             </Button>
             <Button
+                className={classes.button}
                 type="reset"
                 variant="contained"
                 color="secondary"
