@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import TemplatePage from "../components/templatePage";
 import useMovie from "../hooks/useMovie"
 import MovieDetail from "../components/movieDetail";
 import { withRouter } from "react-router-dom";
 import TemplateDetailsPage from "../components/templateDetailsPage";
+import { MoviesContext } from "../contexts/moviesContext";
 
 const useStyles = makeStyles((theme) => ({
     background: {
@@ -21,8 +22,10 @@ const MovieDetailsPage = ({
       params: { id },
     },
   }) => {
-
-    const [movie] = useMovie(id)
+    id = parseInt(id, 10);
+    const context = useContext(MoviesContext);
+    const { movies  } = context;
+    const movie = movies[movies.map((m) => m.id).indexOf(id)]
 
     return (
         <>
