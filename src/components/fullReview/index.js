@@ -22,14 +22,20 @@ const useStyles = makeStyles((theme) => ({
 const FullReview = ({review, movie}) => {
 
     const classes = useStyles();
-  
+
+    const avatar = () => {
+        return (review?.author_details?.avatar_path) ?
+        <Avatar className={classes.avatar} alt={review.author.toUpperCase()} src={`https://image.tmdb.org/t/p/w200/${review.author_details.avatar_path}`} />
+        : <Avatar className={classes.avatar} alt={review.author.toUpperCase()}><Typography variant="h4">{review.author.substring(0,1).toUpperCase()}</Typography></Avatar>
+    }    
+
     return (
         <>
         <div className={classes.root}>
         <Paper className={classes.paper}> 
-            <Typography align="center" variant="h4">{"Movie Review"}</Typography> 
+            <Typography align="center" variant="h4">{`Review for ${movie.title}`}</Typography> 
             <AddReview movie={movie} />          
-            <Avatar className={classes.avatar} alt={review.author.toUpperCase()} src={`https://image.tmdb.org/t/p/w200/${review.author_details.avatar_path}`} />
+            {avatar()}
             <Typography gutterBottom variant="h5">{`Author: ${review.author}`}</Typography>
             <Divider/>
             <Typography gutterBottom>{`Created: ${reviewDateFormat(review.created_at)}`}</Typography>

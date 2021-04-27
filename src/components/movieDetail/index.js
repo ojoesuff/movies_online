@@ -134,13 +134,11 @@ const MovieDetail = ({ movie, history }) => {
                                 </ButtonBase>                                                               
                             </AccordionDetails>                            
                             ) :
-                            <AccordionDetails>
-                                <Typography>No reviews available</Typography>
-                            </AccordionDetails>
+                            true
                             } 
                             {movie.review ? 
                             <AccordionDetails  style={{display: "inline-block"}}>
-                            <Avatar alt={movie.review.author.toUpperCase()} src={''} />
+                            <Avatar alt={movie.review.author}>{movie.review.author.substring(0,1).toUpperCase()}</Avatar>
                             <Typography variant="h6">{movie.review.author}</Typography>
                             <Divider/>
                             <ButtonBase
@@ -149,9 +147,7 @@ const MovieDetail = ({ movie, history }) => {
                                 <Typography align="left">{`${previewReview(movie.review.content)}...READ MORE...`}</Typography> 
                             </ButtonBase>                                                               
                         </AccordionDetails> : 
-                        <AccordionDetails>
-                            <Typography>No reviews available</Typography>
-                        </AccordionDetails>}
+                            true}
                     </Accordion>
                     <p>{JSON.stringify(movie, null, 2)}</p>
                 </Grid>                            
