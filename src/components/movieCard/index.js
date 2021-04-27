@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -14,6 +14,7 @@ import { red, grey } from '@material-ui/core/colors';
 import { Textfit } from 'react-textfit';
 import {getYear} from '../../utilities';
 import { withRouter } from "react-router-dom";
+import { MoviesContext } from "../../contexts/moviesContext";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -39,12 +40,26 @@ const favouriteColour = (isFavourite) => {
 
 const MovieCard = ({ movie, history }) => {
 
+    const [isFavourite, setFavourite] = useState(false)
+    const context = useContext(MoviesContext);
+
     const handleNavigation = (url) => {
         history.push(url);
       };
 
+    const handleFavourite = (id) => {
+        isFavourite ? removeFavourite(id) : addFavourite(id)
+        setFavourite(!isFavourite);
+    }
 
-    const isFavourite = false;
+    const addFavourite = (id) => {
+        context.addToFavorites(id);
+    }
+
+    const removeFavourite = (id) => {
+        context.removeFromFavourites(id);
+    }
+
     const classes = useStyles(isFavourite);  
 
     return (
@@ -74,7 +89,10 @@ const MovieCard = ({ movie, history }) => {
             <CardActions style={{paddingTop: 0}}>  
                 <RatingBubble rating={movie.vote_average}></RatingBubble>
                 <IconButton>
-                    <FavoriteIcon className={classes.favourite} fontSize="large"                    
+                    <FavoriteIcon 
+                        className={classes.favourite} 
+                        fontSize="large"      
+                        onClick={() => handleFavourite(movie.id)}              
                     />
                 </IconButton>                
             </CardActions>          

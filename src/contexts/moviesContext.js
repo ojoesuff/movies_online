@@ -5,17 +5,17 @@ export const MoviesContext = createContext(null);
 
 const reducer = (state, action) => {
   switch (action.type) {
-    case "add-favorite":
+    case "add-favourite":
       return {
         movies: state.movies.map((m) =>
-          m.id === action.payload.movie.id ? { ...m, favorite: true } : m
+          m.id === action.payload.movie.id ? { ...m, favourite: true } : m
         ),
         upcoming: [...state.upcoming],
       };
-    case "remove-favorite":
+    case "remove-favourite":
       return {
         movies: state.movies.map((m) =>
-          m.id === action.payload.movie.id ? { ...m, favorite: false } : m
+          m.id === action.payload.movie.id ? { ...m, favourite: false } : m
         ),
         upcoming: [...state.upcoming],
       };
@@ -45,7 +45,12 @@ const MoviesContextProvider = (props) => {
 
   const addToFavorites = (movieId) => {
     const index = state.movies.map((m) => m.id).indexOf(movieId);
-    dispatch({ type: "add-favorite", payload: { movie: state.movies[index] } });
+    dispatch({ type: "add-favourite", payload: { movie: state.movies[index] } });
+  };
+
+  const removeFromFavourites = (movieId) => {
+    const index = state.movies.map((m) => m.id).indexOf(movieId);
+    dispatch({ type: "remove-favourite", payload: { movie: state.movies[index] } });
   };
 
   const addReview = (movie, review) => {
@@ -73,6 +78,7 @@ const MoviesContextProvider = (props) => {
         upcoming: state.upcoming,
         addToFavorites: addToFavorites,
         addReview: addReview,
+        removeFromFavourites: removeFromFavourites,
       }}
     >
       {props.children}
