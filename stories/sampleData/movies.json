@@ -23,7 +23,8 @@
             "vote_average": 7.8,
             "vote_count": 703,
             "wishlist_ids" : [
-
+                1,
+                2
             ]
         },
         {
@@ -44,7 +45,11 @@
             "title": "Monster Hunter",
             "video": false,
             "vote_average": 7.3,
-            "vote_count": 1024
+            "vote_count": 1024,
+            "wishlist_ids" : [
+                1,
+                2
+            ]
         },
         {
             "adult": false,
@@ -67,7 +72,11 @@
             "title": "Raya and the Last Dragon",
             "video": false,
             "vote_average": 8.7,
-            "vote_count": 647
+            "vote_count": 647,
+            "wishlist_ids" : [
+                1,
+                2
+            ]
         },
         {
             "adult": false,
@@ -87,7 +96,12 @@
             "title": "Wonder Woman 1984",
             "video": false,
             "vote_average": 6.9,
-            "vote_count": 4117
+            "vote_count": 4117,
+            "wishlist_ids" : [
+                0,
+                2,
+                27
+            ]
         },
         {
             "adult": false,

@@ -1,0 +1,16 @@
+{
+    "wishlists": [
+        {
+            "id": 0,
+            "name": "Kids"
+        },
+        {
+            "id": 1,
+            "name": "Classics"
+        },
+        {
+            "id": 23,
+            "name": "Scary"
+        }
+    ]
+  }
