@@ -8,7 +8,7 @@ import Button from "@material-ui/core/Button";
 import MenuRoundedIcon from '@material-ui/icons/MenuRounded';
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
-import { withRouter } from "react-router-dom";
+import { useLocation, withRouter } from "react-router-dom";
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { ButtonGroup } from "@material-ui/core";
@@ -26,24 +26,24 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Header = ({history}) => {
+const Header = ({history}) => {  
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
-  const [selected, setSelected] = useState("/")
+  const location = useLocation();
+  const selected = location.pathname
   const open = Boolean(anchorEl);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const menuOptions = [
     { label: "Home", path: "/" },
-    { label: "Upcoming", path: "/upcoming" },
-    { label: "Favorites", path: "/movies/favourites" },    
+    { label: "Upcoming", path: "/movies/upcoming" },
+    { label: "Favourites", path: "/movies/favourites" },    
     { label: "Wishlist", path: "/wishlist" },
   ];
 
-  const handleMenuSelect = (pageURL) => {
-    history.push(pageURL);
-    setSelected(pageURL);
+  const handleMenuSelect = (pageUrl) => {
+    history.push(pageUrl);  
   };
 
   const handleMenu = (event) => {

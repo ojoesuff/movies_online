@@ -21,13 +21,13 @@ const App = () => {
             {/* <Route exact path="/reviews/form" component={AddMovieReviewPage} />
             
             
-            <Route exact path="/upcoming" component={UpcomingMoviesPage} /> */}
-            <Route path="/reviews/:id" component={MovieReviewPage} />
-            <Route path="/movies/:id" component={MovieDetailsPage} />
+            <Route exact path="/upcoming" component={UpcomingMoviesPage} /> */}            
             <Route exact path="/wishlist" component={Home} />
             <Route exact path="/movies/favourites" component={FavouritesPage} />
-            <Route exact path="/upcoming" component={Home} />
-            <Route exact path="/" component={Home} />              
+            <Route exact path="/movies/upcoming" component={Home} />
+            <Route exact path="/" component={Home} />  
+            <Route path="/reviews/:id" component={MovieReviewPage} />
+            <Route path="/movies/:id" component={MovieDetailsPage} />            
             <Redirect from="*" to="/" />
           </Switch>
       </GenresContextProvider>  

@@ -1,6 +1,7 @@
 import MovieCard from "../movieCard";
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from "@material-ui/core/styles";
+import { Typography } from "@material-ui/core";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -27,9 +28,17 @@ const MovieList = ({ movies }) => {
     return (
     <>
         <div className={classes.toolbar} />
+            
+            {filteredMovies.length > 0 ?
             <Grid container spacing={2} className={classes.toolbar}>
             {filteredMovies}
-            </Grid>
+            </Grid> :
+            <div>
+                <Typography align="center" variant="h5">No Movies Available</Typography>
+            </div>
+            
+            }
+            
         <div className={classes.toolbar} />
     </>
         

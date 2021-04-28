@@ -6,12 +6,10 @@ function FavouritesPage() {
   const context = useContext(MoviesContext);
   const { movies  } = context;
   console.log("favourites page")
-  const favouriteMovies = movies.map(m => {
-      return m?.favourite ? m : false
-  })
+  const favouriteMovies = movies.filter((m) => m.favourite);
 
   return (
-    <TemplateMoviePage movies={movies}>
+    <TemplateMoviePage movies={favouriteMovies}>
     </TemplateMoviePage>
   );
 }

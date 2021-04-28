@@ -40,7 +40,8 @@ const favouriteColour = (isFavourite) => {
 
 const MovieCard = ({ movie, history }) => {
 
-    const [isFavourite, setFavourite] = useState(false)
+    const [isFavourite, setFavourite] = useState(movie?.favourite ? movie.favourite : false)
+    console.log(movie.favourite)
     const context = useContext(MoviesContext);
 
     const handleNavigation = (url) => {
