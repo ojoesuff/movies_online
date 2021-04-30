@@ -23,8 +23,8 @@
             "vote_average": 7.8,
             "vote_count": 703,
             "wishlist_ids" : [
-                1,
-                2
+                0,
+                1
             ]
         },
         {
@@ -47,8 +47,8 @@
             "vote_average": 7.3,
             "vote_count": 1024,
             "wishlist_ids" : [
-                1,
-                2
+                0,
+                1
             ]
         },
         {
@@ -99,8 +99,7 @@
             "vote_count": 4117,
             "wishlist_ids" : [
                 0,
-                2,
-                27
+                2
             ]
         },
         {
