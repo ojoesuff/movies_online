@@ -53,8 +53,9 @@ const AddReview = ({history, movie}) => {
 
     const onSubmit = (review) => {
         review.id = movie.id;
-        review.created_at = new Date();
+        review.created_at = new Date();        
         context.addReview(movie, review);
+        reset();
         setSnackOpen(true);
     };
 
