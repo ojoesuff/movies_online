@@ -6,6 +6,7 @@ import { useContext, useEffect, useState } from 'react';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import { WishlistsContext } from "../../contexts/wishlistsContext";
+import { MoviesContext } from "../../contexts/moviesContext";
 import { withRouter } from 'react-router';
 import { useForm } from 'react-hook-form';
 import Alert from '@material-ui/lab/Alert';
@@ -15,8 +16,7 @@ import WarningIcon from '@material-ui/icons/Warning';
 const useStyles = makeStyles((theme) => ({
     root: {
         display: "grid",
-        justifyContent: "center",
-        padding: theme.spacing(8),
+        padding: theme.spacing(10),
     },
     form: {
         position: "absolute",
@@ -29,9 +29,6 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: theme.palette.background.paper,
         padding: theme.spacing(2, 4, 3),
     },
-    accordion: {
-        minWidth: "40vw",
-    },
     button: {
         textTransform: "none",
         marginTop: theme.spacing(2)
@@ -40,16 +37,21 @@ const useStyles = makeStyles((theme) => ({
     error: {
         color: theme.palette.warning.dark
     },
+    grid: {
+        width: "100%",
+    }
 }));
 
-const WishlistDetail = ({ movies, history }) => {
+const WishlistDetail = ({ history }) => {
     const classes = useStyles();
     const [wishlistMovies, setWishlistMovies] = useState([])
     const [modalOpen, setModalOpen] = useState(false);
     const [ snackOpen, setSnackOpen ] = useState(false);
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
-    const context = useContext(WishlistsContext);
-    const { wishlists } = context
+    const wishlistContext = useContext(WishlistsContext);
+    const moviesContext = useContext(MoviesContext);
+    const { movies } = moviesContext
+    const { wishlists } = wishlistContext
     const snackOpenDuration = 1000
 
     const handleModalOpen = () => {
@@ -60,6 +62,11 @@ const WishlistDetail = ({ movies, history }) => {
         setModalOpen(false);
     };
 
+    const handleWishlistDelete = (id) => {
+        wishlistContext.deleteWishlist(id)
+        history.push("/wishlist")
+    }
+
     const handleSnackClose = e => {
         setSnackOpen(false);
         setModalOpen(false);
@@ -68,17 +75,20 @@ const WishlistDetail = ({ movies, history }) => {
 
     const onSubmit = (wishlistName) => {
         setSnackOpen(true);        
-        context.addWishlist(wishlistName); 
+        wishlistContext.addWishlist(wishlistName); 
         reset();       
     };
 
-    // const context = useContext(MoviesContext);
-    // const { movies  } = context;
+    const handleRemoveMovie = (wishlistId, movieId) => {
+        moviesContext.removeWishlist(wishlistId, movieId)
+        history.replace("/wishlist")
+    }
 
     const getWishlistMovies = (wishlistId) => {
         return movies.reduce((result, movie) => {
             {
                 if (movie?.wishlist_ids?.includes(wishlistId)) {
+                    console.log(movie.wishlist_ids)
                     result.push({ id: movie.id, title: movie.title })
                 }
                 return result
@@ -103,8 +113,8 @@ const WishlistDetail = ({ movies, history }) => {
     return (
         <>
             <div className={classes.root}>
-                <Grid container spacing={1}>
-                    <Grid item lg={8} md={8} sm={12} xs={12}>
+                <Grid container spacing={1} className={classes.grid}>
+                    <Grid item xs={12}>
                         <IconButton>
                             <AddCircleIcon fontSize="large" onClick={() => handleModalOpen()} />
                         </IconButton>
@@ -168,12 +178,13 @@ const WishlistDetail = ({ movies, history }) => {
 
                     {wishlists.length > 0 ?
                         wishlists.map(wishlist => (
-                            <Grid item lg={8} md={8} sm={12} xs={12} className={classes.accordion}>
+                            <>
+                            <Grid item xs={8}>
                                 <Accordion style={{ opacity: 0.9 }}>
                                     <AccordionSummary
                                         expandIcon={<ExpandMoreIcon />}
                                     >
-                                        <Typography>{wishlist.name}</Typography>
+                                        <Typography>{wishlist.name}</Typography>                                        
                                     </AccordionSummary>
                                     {wishlistMovies.find(movie => movie.id == wishlist.id)?.movies?.length > 0 ?
                                         wishlistMovies.find(movie => movie.id == wishlist.id).movies.map(m =>
@@ -183,7 +194,9 @@ const WishlistDetail = ({ movies, history }) => {
                                                         {`${m.title}`}
                                                     </Typography>
                                                 </Button>
-                                                <IconButton>
+                                                <IconButton
+                                                    onClick={() => handleRemoveMovie(wishlist.id, m.id)}
+                                                >
                                                     <DeleteIcon color="error" />
                                                 </IconButton>
                                             </AccordionDetails>
@@ -193,8 +206,16 @@ const WishlistDetail = ({ movies, history }) => {
                                             <Typography>Empty</Typography>
                                         </AccordionDetails>
                                     }
-                                </Accordion>
+                                </Accordion>                                
                             </Grid>
+                            <Grid item xs={2}>
+                            <Button 
+                                variant="contained" 
+                                onClick={() => handleWishlistDelete(wishlist.id)}
+                                color="secondary">
+                                    Delete</Button>
+                            </Grid>
+                            </>
                         ))
                         : <Typography>No wishlists created. Click the button below...</Typography>
                     }

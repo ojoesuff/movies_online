@@ -15,6 +15,7 @@ import { Textfit } from 'react-textfit';
 import {getYear} from '../../utilities';
 import { withRouter } from "react-router-dom";
 import { MoviesContext } from "../../contexts/moviesContext";
+import PlaylistAddCheckIcon from '@material-ui/icons/PlaylistAddCheck';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -41,7 +42,6 @@ const favouriteColour = (isFavourite) => {
 const MovieCard = ({ movie, history }) => {
 
     const [isFavourite, setFavourite] = useState(movie?.favourite ? movie.favourite : false)
-    console.log(movie.favourite)
     const context = useContext(MoviesContext);
 
     const handleNavigation = (url) => {
@@ -51,6 +51,10 @@ const MovieCard = ({ movie, history }) => {
     const handleFavourite = (id) => {
         isFavourite ? removeFavourite(id) : addFavourite(id)
         setFavourite(!isFavourite);
+    }
+
+    const handleWishlist = (wishlistId, movieId) => {
+        context.addWishlist(wishlistId, movieId)
     }
 
     const addFavourite = (id) => {
@@ -95,7 +99,14 @@ const MovieCard = ({ movie, history }) => {
                         fontSize="large"      
                         onClick={() => handleFavourite(movie.id)}              
                     />
-                </IconButton>                
+                </IconButton>     
+                <IconButton>
+                    <PlaylistAddCheckIcon 
+                        className={classes.wishlist} 
+                        fontSize="large"      
+                        onClick={() => handleWishlist(0, movie.id)}              
+                    />
+                </IconButton>            
             </CardActions>          
         </Card>            
     )
