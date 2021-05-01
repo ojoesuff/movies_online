@@ -9,7 +9,7 @@ import IconButton from '@material-ui/core/IconButton';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import RatingBubble from "../ratingBubble";
 import img from '../../images/batman.jpg'
-import { CardActions } from '@material-ui/core';
+import { Box, Button, CardActions, Modal, TextField } from '@material-ui/core';
 import { red, grey } from '@material-ui/core/colors';
 import { Textfit } from 'react-textfit';
 import {getYear} from '../../utilities';
@@ -42,6 +42,8 @@ const favouriteColour = (isFavourite) => {
 const MovieCard = ({ movie, history }) => {
 
     const [isFavourite, setFavourite] = useState(movie?.favourite ? movie.favourite : false)
+    const [modalData, setModalData] = useState(null)
+    const [modalOpen, setModalOpen] = useState(false)
     const context = useContext(MoviesContext);
 
     const handleNavigation = (url) => {
@@ -54,6 +56,7 @@ const MovieCard = ({ movie, history }) => {
     }
 
     const handleWishlist = (wishlistId, movieId) => {
+        handleModalOpen({id: movieId})
         context.addWishlist(wishlistId, movieId)
     }
 
@@ -65,9 +68,19 @@ const MovieCard = ({ movie, history }) => {
         context.removeFromFavourites(id);
     }
 
+    const handleModalClose = () => {
+        setModalOpen(false)
+    }
+
+    const handleModalOpen = data => {
+        setModalData(data)
+        setModalOpen(true)
+    }
+
     const classes = useStyles(isFavourite);  
 
     return (
+        <>
         <Card className={classes.card}>                    
         <CardActionArea 
             onClick={() => handleNavigation(`/movies/${movie.id}`)}
@@ -108,7 +121,42 @@ const MovieCard = ({ movie, history }) => {
                     />
                 </IconButton>            
             </CardActions>          
-        </Card>            
+        </Card> 
+        {modalData ?   
+        <Modal
+        open={modalOpen}
+        onClose={handleModalClose}
+    >
+        <Box className={classes.form} component="div">
+            <Typography variant="h6" color={"primary"}>
+                Add to Wishlist {modalData.id}
+            </Typography>
+                <TextField
+                    variant="outlined"
+                    margin="large"
+                    required
+                    id="name"
+                    label="Name"
+                    name="name"
+                    autoFocus
+                />
+
+                <Box>
+                    <Button
+                        className={classes.button}
+                        type="submit"
+                        variant="contained"
+                        color="primary"
+                    >
+                        Add
+                    </Button>
+                </Box>
+        </Box>
+
+    </Modal>
+    :
+    false}
+    </>         
     )
 }
 

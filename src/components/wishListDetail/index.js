@@ -31,9 +31,9 @@ const useStyles = makeStyles((theme) => ({
     },
     button: {
         textTransform: "none",
-        marginTop: theme.spacing(2)
+        margin: 0
     },
-    
+
     error: {
         color: theme.palette.warning.dark
     },
@@ -46,7 +46,8 @@ const WishlistDetail = ({ history }) => {
     const classes = useStyles();
     const [wishlistMovies, setWishlistMovies] = useState([])
     const [modalOpen, setModalOpen] = useState(false);
-    const [ snackOpen, setSnackOpen ] = useState(false);
+    const [snackOpen, setSnackOpen] = useState(false);
+    const [deleteSnackOpen, setDeleteSnackOpen] = useState(false);
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
     const wishlistContext = useContext(WishlistsContext);
     const moviesContext = useContext(MoviesContext);
@@ -63,6 +64,7 @@ const WishlistDetail = ({ history }) => {
     };
 
     const handleWishlistDelete = (id) => {
+        setDeleteSnackOpen(true)
         wishlistContext.deleteWishlist(id)
         history.push("/wishlist")
     }
@@ -71,15 +73,21 @@ const WishlistDetail = ({ history }) => {
         setSnackOpen(false);
         setModalOpen(false);
         history.push("/wishlist")
-      };
+    };
+
+    const handleDeleteSnackClose = e => {
+        setDeleteSnackOpen(false);
+        history.push("/wishlist")
+    };
 
     const onSubmit = (wishlistName) => {
-        setSnackOpen(true);        
-        wishlistContext.addWishlist(wishlistName); 
-        reset();       
+        setSnackOpen(true);
+        wishlistContext.addWishlist(wishlistName);
+        reset();
     };
 
     const handleRemoveMovie = (wishlistId, movieId) => {
+        setDeleteSnackOpen(true)
         moviesContext.removeWishlist(wishlistId, movieId)
         history.replace("/wishlist")
     }
@@ -88,7 +96,6 @@ const WishlistDetail = ({ history }) => {
         return movies.reduce((result, movie) => {
             {
                 if (movie?.wishlist_ids?.includes(wishlistId)) {
-                    console.log(movie.wishlist_ids)
                     result.push({ id: movie.id, title: movie.title })
                 }
                 return result
@@ -104,7 +111,7 @@ const WishlistDetail = ({ history }) => {
                 }
             )))
         }
-    }, []);
+    });
 
     const handleMoviePage = movieId => {
         history.push(`/movies/${movieId}`)
@@ -113,6 +120,22 @@ const WishlistDetail = ({ history }) => {
     return (
         <>
             <div className={classes.root}>
+                <Snackbar
+                    autoHideDuration={snackOpenDuration}
+                    anchorOrigin={{ vertical: "top", horizontal: "right" }}
+                    open={deleteSnackOpen}
+                    onClose={handleDeleteSnackClose}
+                >
+                    <Alert
+                        severity="success"
+                        variant="filled"
+                        onClose={handleDeleteSnackClose}
+                    >
+                        <Typography>
+                            Successfully deleted
+                                    </Typography>
+                    </Alert>
+                </Snackbar>
                 <Grid container spacing={1} className={classes.grid}>
                     <Grid item xs={12}>
                         <IconButton>
@@ -160,7 +183,7 @@ const WishlistDetail = ({ history }) => {
                                     })}
                                 />
                                 {errors.name && (<Typography className={classes.error}><WarningIcon fontSize="small" />{" " + errors.name.message}</Typography>)}
-                                
+
                                 <Box>
                                     <Button
                                         className={classes.button}
@@ -179,42 +202,42 @@ const WishlistDetail = ({ history }) => {
                     {wishlists.length > 0 ?
                         wishlists.map(wishlist => (
                             <>
-                            <Grid item xs={8}>
-                                <Accordion style={{ opacity: 0.9 }}>
-                                    <AccordionSummary
-                                        expandIcon={<ExpandMoreIcon />}
-                                    >
-                                        <Typography>{wishlist.name}</Typography>                                        
-                                    </AccordionSummary>
-                                    {wishlistMovies.find(movie => movie.id == wishlist.id)?.movies?.length > 0 ?
-                                        wishlistMovies.find(movie => movie.id == wishlist.id).movies.map(m =>
+                                <Grid item xs={8}>
+                                    <Accordion style={{ opacity: 0.9 }}>
+                                        <AccordionSummary
+                                            expandIcon={<ExpandMoreIcon />}
+                                        >
+                                            <Typography>{wishlist.name}</Typography>
+                                        </AccordionSummary>
+                                        {wishlistMovies.find(movie => movie.id == wishlist.id)?.movies?.length > 0 ?
+                                            wishlistMovies.find(movie => movie.id == wishlist.id).movies.map(m =>
+                                                <AccordionDetails>
+                                                    <Button onClick={() => handleMoviePage(m.id)} className={classes.button}>
+                                                        <Typography alt={m.title}>
+                                                            {`${m.title}`}
+                                                        </Typography>
+                                                    </Button>
+                                                    <IconButton
+                                                        onClick={() => handleRemoveMovie(wishlist.id, m.id)}
+                                                    >
+                                                        <DeleteIcon color="error" />
+                                                    </IconButton>
+                                                </AccordionDetails>
+                                            )
+                                            :
                                             <AccordionDetails>
-                                                <Button onClick={() => handleMoviePage(m.id)} className={classes.button}>
-                                                    <Typography alt={m.title}>
-                                                        {`${m.title}`}
-                                                    </Typography>
-                                                </Button>
-                                                <IconButton
-                                                    onClick={() => handleRemoveMovie(wishlist.id, m.id)}
-                                                >
-                                                    <DeleteIcon color="error" />
-                                                </IconButton>
+                                                <Typography>Empty</Typography>
                                             </AccordionDetails>
-                                        )
-                                        :
-                                        <AccordionDetails>
-                                            <Typography>Empty</Typography>
-                                        </AccordionDetails>
-                                    }
-                                </Accordion>                                
-                            </Grid>
-                            <Grid item xs={2}>
-                            <Button 
-                                variant="contained" 
-                                onClick={() => handleWishlistDelete(wishlist.id)}
-                                color="secondary">
-                                    Delete</Button>
-                            </Grid>
+                                        }
+                                    </Accordion>
+                                </Grid>
+                                <Grid item xs={2}>
+                                    <Button
+                                        variant="contained"
+                                        onClick={() => handleWishlistDelete(wishlist.id)}
+                                        color="secondary">
+                                        Delete</Button>
+                                </Grid>
                             </>
                         ))
                         : <Typography>No wishlists created. Click the button below...</Typography>

@@ -38,25 +38,11 @@ const reducer = (state, action) => {
       return {
         movies: state.movies.map((m) =>
           m.id === action.payload.movieId ? { ...m, wishlist_ids: [
-          //   m?.wishlist_ids?.reduce((result, id) => {        
-          //         if (id !== action.payload.wishlistId) {
-          //           console.log(`Keeping ${id} for ${m.title}`)
-          //             result.push(id)
-          //         } 
-          //         else {
-          //           console.log(`Removing ${id} from ${m.title}`)
-          //         }
-          //         console.log(result)
-          //         return result 
-          // }, [])
-          // m.wishlist_ids.filter(id => id != action.payload.wishlistId)
           ...m.wishlist_ids.filter(id => id != action.payload.wishlistId)
           ] } : m
         ),
         upcoming: [...state.upcoming],
       };
-    case "remove-wishlist-all":
-      return
     case "load-discover-movies":
       return {
         movies: action.payload.movies,
@@ -103,10 +89,6 @@ const MoviesContextProvider = (props) => {
     dispatch({ type: "remove-wishlist", payload: { wishlistId, movieId } });
   }
 
-  const removeWishlistAll = (wishlistId) => {
-    dispatch({ type: "remove-wishlist-all", payload: { wishlistId } });
-  }
-
   useEffect(() => {
     getMovies().then((movies) => {
       dispatch({ type: "load-discover-movies", payload: { movies } });
@@ -131,7 +113,6 @@ const MoviesContextProvider = (props) => {
         removeFromFavourites: removeFromFavourites,
         addWishlist: addWishlist,
         removeWishlist: removeWishlist,
-        removeWishlistAll: removeWishlistAll,
       }}
     >
       {props.children}
