@@ -22,14 +22,9 @@ const reducer = (state, action) => {
     case "add-wishlist":
       return {
         movies: state.movies.map((m) => {
-          // if(m.id === action.payload.movieId) {
-          //   console.log(`${m.id} matches ${action.payload.movieId}`)
-          //   return {...m, wishlist_ids: [0 , 1]}
-          // } else {
-          //   console.log(`${m.id} does not match ${action.payload.movieId}`)
-          //   return m
-          // }
-          return (m.id === action.payload.movieId) ? {...m, wishlist_ids: [0, 1]} : m
+          return (m.id === action.payload.movieId) ? {...m, wishlist_ids: 
+            m?.wishlist_ids ? [...m?.wishlist_ids, action.payload.wishlistId] : [action.payload.wishlistId]
+          } : m
         }
         ),
         upcoming: [...state.upcoming],

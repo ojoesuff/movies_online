@@ -31,9 +31,16 @@ const useStyles = makeStyles((theme) => ({
     },
     button: {
         textTransform: "none",
-        margin: 0
+        margin: 0,
     },
-
+    submitButton: {
+        marginTop: theme.spacing(2)
+    },
+    accordian: {
+        margin: 0,
+        paddingTop: 0,
+        paddingBottom: 0,
+    },
     error: {
         color: theme.palette.warning.dark
     },
@@ -186,7 +193,7 @@ const WishlistDetail = ({ history }) => {
 
                                 <Box>
                                     <Button
-                                        className={classes.button}
+                                        className={classes.submitButton}
                                         type="submit"
                                         variant="contained"
                                         color="primary"
@@ -204,14 +211,14 @@ const WishlistDetail = ({ history }) => {
                             <>
                                 <Grid item xs={8}>
                                     <Accordion style={{ opacity: 0.9 }}>
-                                        <AccordionSummary
+                                        <AccordionSummary 
                                             expandIcon={<ExpandMoreIcon />}
                                         >
-                                            <Typography>{wishlist.name}</Typography>
+                                            <Typography  variant="h6">{wishlist.name}</Typography>
                                         </AccordionSummary>
                                         {wishlistMovies.find(movie => movie.id == wishlist.id)?.movies?.length > 0 ?
                                             wishlistMovies.find(movie => movie.id == wishlist.id).movies.map(m =>
-                                                <AccordionDetails>
+                                                <AccordionDetails className={classes.accordian}>
                                                     <Button onClick={() => handleMoviePage(m.id)} className={classes.button}>
                                                         <Typography alt={m.title}>
                                                             {`${m.title}`}
@@ -226,7 +233,7 @@ const WishlistDetail = ({ history }) => {
                                             )
                                             :
                                             <AccordionDetails>
-                                                <Typography>Empty</Typography>
+                                                <Typography>No movies in this list</Typography>
                                             </AccordionDetails>
                                         }
                                     </Accordion>

@@ -9,21 +9,24 @@ import IconButton from '@material-ui/core/IconButton';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import RatingBubble from "../ratingBubble";
 import img from '../../images/batman.jpg'
-import { Box, Button, CardActions, Modal, TextField } from '@material-ui/core';
+import { Box, Button, CardActions, Modal, Snackbar, TextField } from '@material-ui/core';
 import { red, grey } from '@material-ui/core/colors';
 import { Textfit } from 'react-textfit';
-import {getYear} from '../../utilities';
+import { getYear } from '../../utilities';
 import { withRouter } from "react-router-dom";
 import { MoviesContext } from "../../contexts/moviesContext";
+import { WishlistsContext } from "../../contexts/wishlistsContext";
 import PlaylistAddCheckIcon from '@material-ui/icons/PlaylistAddCheck';
+import AddIcon from '@material-ui/icons/Add';
+import Alert from '@material-ui/lab/Alert';
 
 
 const useStyles = makeStyles((theme) => ({
     card: {
-      maxWidth: 250,
+        maxWidth: 250,
     },
     media: {
-      height: 250,
+        height: 250,
     },
     favourite: {
         color: (isFavourite) => favouriteColour(isFavourite)[500],
@@ -31,6 +34,22 @@ const useStyles = makeStyles((theme) => ({
     title: {
         minHeight: 80,
         maxHeight: 200,
+    },
+    modal: {
+        position: "absolute",
+        left: "50%",
+        top: "50%",
+        transform: "translate(-50%, -50%)",
+        width: "30%",
+        maxHeight: "100vh",
+        overflowY: "auto",
+        backgroundColor: theme.palette.background.paper,
+        padding: theme.spacing(6),
+    },
+    wishlistButton: {
+        width: "100%",
+        marginTop: theme.spacing(1),
+        textTransform: "none",
     }
 
 }));
@@ -42,121 +61,154 @@ const favouriteColour = (isFavourite) => {
 const MovieCard = ({ movie, history }) => {
 
     const [isFavourite, setFavourite] = useState(movie?.favourite ? movie.favourite : false)
-    const [modalData, setModalData] = useState(null)
+    const [modalMovieId, setModalMovieId] = useState(null)
+    const [snackOpen, setSnackOpen] = useState(false);
     const [modalOpen, setModalOpen] = useState(false)
-    const context = useContext(MoviesContext);
+    const moviesContext = useContext(MoviesContext);
+    const wishlistContext = useContext(WishlistsContext);
+    const { wishlists } = wishlistContext
+    const snackOpenDuration = 500;
 
     const handleNavigation = (url) => {
         history.push(url);
-      };
+    };
 
     const handleFavourite = (id) => {
         isFavourite ? removeFavourite(id) : addFavourite(id)
         setFavourite(!isFavourite);
     }
 
-    const handleWishlist = (wishlistId, movieId) => {
-        handleModalOpen({id: movieId})
-        context.addWishlist(wishlistId, movieId)
+    const handleWishlist = (movieId) => {
+        handleModalOpen(movieId)
     }
 
     const addFavourite = (id) => {
-        context.addToFavorites(id);
+        moviesContext.addToFavorites(id);
     }
 
     const removeFavourite = (id) => {
-        context.removeFromFavourites(id);
+        moviesContext.removeFromFavourites(id);
     }
 
     const handleModalClose = () => {
         setModalOpen(false)
     }
 
-    const handleModalOpen = data => {
-        setModalData(data)
+    const handleModalOpen = movieId => {
+        setModalMovieId(movieId)
         setModalOpen(true)
     }
 
-    const classes = useStyles(isFavourite);  
+    const handleAddToWishlist = (wishlistId, movieId) => {
+        handleSnackOpen()
+        moviesContext.addWishlist(wishlistId, movieId)
+    }
+
+    const handleSnackClose = () => {
+        setSnackOpen(false)
+        setModalOpen(false)
+    }
+
+    const handleSnackOpen = () => {
+        setSnackOpen(true)
+    }
+
+    const classes = useStyles(isFavourite);
 
     return (
         <>
-        <Card className={classes.card}>                    
-        <CardActionArea 
-            onClick={() => handleNavigation(`/movies/${movie.id}`)}
-            style={{paddingBottom: 0}}
-            >
-            <CardMedia
-                className={classes.media}
-                image={
-                    movie.poster_path
-                      ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}`
-                      : img
-                  }
-                title={movie.title}
-            /> 
-            <CardContent style={{paddingBottom:0}}>
-            <Textfit mode="multi" className={classes.title} max={30}>
-                {movie.title}
-            </Textfit>
-            <Typography style={{fontWeight:"bold"}} variant="h4">
-                {getYear(movie.release_date)}
-            </Typography>
-            </CardContent>
-            </CardActionArea>  
-            <CardActions style={{paddingTop: 0}}>  
-                <RatingBubble rating={movie.vote_average}></RatingBubble>
-                <IconButton>
-                    <FavoriteIcon 
-                        className={classes.favourite} 
-                        fontSize="large"      
-                        onClick={() => handleFavourite(movie.id)}              
+            <Card className={classes.card}>
+                <CardActionArea
+                    onClick={() => handleNavigation(`/movies/${movie.id}`)}
+                    style={{ paddingBottom: 0 }}
+                >
+                    <CardMedia
+                        className={classes.media}
+                        image={
+                            movie.poster_path
+                                ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}`
+                                : img
+                        }
+                        title={movie.title}
                     />
-                </IconButton>     
-                <IconButton>
-                    <PlaylistAddCheckIcon 
-                        className={classes.wishlist} 
-                        fontSize="large"      
-                        onClick={() => handleWishlist(0, movie.id)}              
-                    />
-                </IconButton>            
-            </CardActions>          
-        </Card> 
-        {modalData ?   
-        <Modal
-        open={modalOpen}
-        onClose={handleModalClose}
-    >
-        <Box className={classes.form} component="div">
-            <Typography variant="h6" color={"primary"}>
-                Add to Wishlist {modalData.id}
-            </Typography>
-                <TextField
-                    variant="outlined"
-                    margin="large"
-                    required
-                    id="name"
-                    label="Name"
-                    name="name"
-                    autoFocus
-                />
-
-                <Box>
-                    <Button
-                        className={classes.button}
-                        type="submit"
-                        variant="contained"
-                        color="primary"
+                    <CardContent style={{ paddingBottom: 0 }}>
+                        <Textfit mode="multi" className={classes.title} max={30}>
+                            {movie.title}
+                        </Textfit>
+                        <Typography style={{ fontWeight: "bold" }} variant="h4">
+                            {getYear(movie.release_date)}
+                        </Typography>
+                    </CardContent>
+                </CardActionArea>
+                <CardActions style={{ paddingTop: 0 }}>
+                    <RatingBubble rating={movie.vote_average}></RatingBubble>
+                    <IconButton>
+                        <FavoriteIcon
+                            className={classes.favourite}
+                            fontSize="large"
+                            onClick={() => handleFavourite(movie.id)}
+                        />
+                    </IconButton>
+                    <IconButton>
+                        <PlaylistAddCheckIcon
+                            className={classes.wishlist}
+                            fontSize="large"
+                            onClick={() => handleWishlist(movie.id)}
+                        />
+                    </IconButton>
+                </CardActions>
+            </Card>
+            <Snackbar
+                    autoHideDuration={snackOpenDuration}
+                    anchorOrigin={{ vertical: "top", horizontal: "right" }}
+                    open={snackOpen}
+                    onClose={handleSnackClose}
+                >
+                    <Alert
+                        severity="success"
+                        variant="filled"
+                        onClose={handleSnackClose}
                     >
-                        Add
-                    </Button>
-                </Box>
-        </Box>
+                        <Typography>
+                            Successfully added to wishlist
+                                    </Typography>
+                    </Alert>
+                </Snackbar>
+            {modalMovieId ?
+                <Modal
+                    open={modalOpen}
+                    onClose={handleModalClose}
+                >
+                    <Box className={classes.modal} component="div">
+                        <Typography variant="h6" color={"primary"}>
+                            Add to Wishlist
+                        </Typography>
+                        {wishlists.length > 0 ?
+                            wishlists.map(wishlist => (
+                                <Box>
+                                    <Button
+                                        className={classes.wishlistButton}
+                                        variant="contained"
+                                        color="primary"
+                                        onClick={() => handleAddToWishlist(wishlist.id, modalMovieId)}
+                                        startIcon={<AddIcon />}
+                                    >
+                                        <Typography>{wishlist.name}</Typography>
+                                    </Button>
+                                </Box>
+                            ))
 
-    </Modal>
-    :
-    false}
-    </>         
+                            :
+                            <Typography align="left">No wishlists created</Typography>
+                        }
+
+
+                    </Box>
+
+                </Modal>
+                :
+                false}
+        </>
     )
 }
 
