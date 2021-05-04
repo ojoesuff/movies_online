@@ -3,8 +3,9 @@ import TemplatePage from "../templatePage";
 import MovieList from "../movieList";
 import FilterSideBar from "../filterSideBar";
 import { getYear } from "../../utilities"
+import PageTitle from "../pageTitle";
 
-const TemplatMoviePage = ({ movies }) => {
+const TemplatMoviePage = ({ movies,title  }) => {
   const [nameFilter, setNameFilter] = useState("");
   const [genreFilter, setGenreFilter] = useState("0");
   const [yearFilter, setYearFilter] = useState([1917, 3000])
@@ -66,6 +67,7 @@ const TemplatMoviePage = ({ movies }) => {
           ratingRange={{min: getMinRating, max: getMaxRating}}
         >
         </FilterSideBar>
+        <PageTitle title={title} />
         <MovieList
           movies={displayedMovies}
         >  

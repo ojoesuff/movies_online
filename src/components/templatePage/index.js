@@ -23,7 +23,7 @@ const TemplatePage = (props) => {
     <>
     <Theme>
       <Header />
-        {props.children}
+        {props.children}      
       <Footer /> 
     </Theme>
       

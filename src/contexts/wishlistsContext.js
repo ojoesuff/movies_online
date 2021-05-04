@@ -58,7 +58,6 @@ const WishlistsContextProvider = props => {
   }
 
   const addWishlist = wishlist => {
-    console.log("adding wishlist")
     wishlists.push({ id: generateNextId(), name: wishlist.name })
   }
 

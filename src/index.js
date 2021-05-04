@@ -9,6 +9,8 @@ import MovieDetailsPage from "./pages/movieDetailsPage"
 import MovieReviewPage from "./pages/movieReviewPage"
 import FavouritesPage from "./pages/favouritesPage"
 import WishlistPage from "./pages/wishlistPage"
+import UpcomingPage from "./pages/upcomingPage"
+import TopRatedPage from "./pages/topRatedPage"
 
 
 const App = () => {
@@ -24,7 +26,8 @@ const App = () => {
             <Route exact path="/upcoming" component={UpcomingMoviesPage} /> */}
               <Route exact path="/wishlist" component={WishlistPage} />
               <Route exact path="/movies/favourites" component={FavouritesPage} />
-              <Route exact path="/movies/upcoming" component={Home} />
+              <Route exact path="/movies/upcoming" component={UpcomingPage} />
+              <Route exact path="/movies/top-rated" component={TopRatedPage} />
               <Route exact path="/" component={Home} />
               <Route path="/reviews/:id" component={MovieReviewPage} />
               <Route path="/movies/:id" component={MovieDetailsPage} />

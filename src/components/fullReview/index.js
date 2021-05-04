@@ -33,7 +33,6 @@ const FullReview = ({review, movie}) => {
         <>
         <div className={classes.root}>
         <Paper className={classes.paper}> 
-            <Typography align="center" variant="h4">{`Review for ${movie.title}`}</Typography> 
             <AddReview movie={movie} />          
             {avatar()}
             <Typography gutterBottom variant="h5">{`Author: ${review.author}`}</Typography>

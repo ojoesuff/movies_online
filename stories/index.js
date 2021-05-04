@@ -1,15 +1,8 @@
 import React from "react";
 import { storiesOf } from "@storybook/react";
 import RatingBubble from "../src/components/ratingBubble";
-import WishlistDetail from "../src/components/wishListDetail";
-import wishlists from "./sampleData/wishlists.json"
-import movies from "./sampleData/movies.json"
-// import MovieList from "../src/components/movieList";
-// import Header from "../src/components/header";
-// import Footer from "../src/components/footer";
-// import FilterSideBar from "../src/components/filterSideBar";
-// import MovieDetail from "../src/components/movieDetail";
-// import AddReviewButton from "../src/components/addReviewButton";
+import PageTitle from "../src/components/pageTitle";
+import Footer from "../src/components/footer";
 
 const emptyList = {}
 
@@ -24,42 +17,16 @@ storiesOf("Movies/Rating Bubble", module)
     return <RatingBubble rating={8.8} />;
   })
 
-storiesOf("Wishlist/Wishlist Details", module)
-  .add("Multiple", () => {
-    return <WishlistDetail wishlists={wishlists.wishlists} movies={movies.results}/>;
+storiesOf("Page Common/Page Title", module)
+  .add("Short", () => {
+    return <PageTitle title="Short Title" />;
   })
-  .add("Empty", () => {
-    return <WishlistDetail wishlists={emptyList} movies={movies.results}/>;
+  .add("Long", () => {
+    return <PageTitle title="This Would Represent a Movie Title That is Longer Than the Movie 'Short Title'" />;
   })
 
-// storiesOf("Movies/Movie Card", module)
-//   .add("Fight Club", () => {
-//     return
-//     <MemoryRouter> 
-//       <MovieCard movie={fightClubMovie} />
-//     </MemoryRouter>
-//   })
-  // .add("Good", () => {
-  //   return <MovieCard rating={6.1} />;
-  // })
-  // .add("Movie Card", () => {
-  //   return <MovieCard />;
-  // })
-  // .add("Movie List", () => {
-  //   return <MovieList />;
-  // })
-  // .add("Header", () => {
-  //   return <Header />;
-  // })
-  // .add("Footer", () => {
-  //   return <Footer />;
-  // })
-  // .add("FilterSideBar", () => {
-  //   return <FilterSideBar />;
-  // })
-  // .add("MovieDetail", () => {
-  //   return <MovieDetail />;
-  // })
-  // .add("AddReviewButton", () => {
-  //   return <AddReviewButton />;
-  // })
+storiesOf("Page Common/Footer", module)
+  .add("All", () => {
+    return <Footer title="Short Title" />;
+  })
+

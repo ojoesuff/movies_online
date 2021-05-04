@@ -1,5 +1,5 @@
 import React, { useEffect, createContext, useReducer } from "react";
-import { getMovies, getUpcomingMovies } from "../api/tmdb";
+import { getMovies, getUpcomingMovies, getTopRatedMovies } from "../api/tmdb";
 
 export const MoviesContext = createContext(null);
 
@@ -11,6 +11,7 @@ const reducer = (state, action) => {
           m.id === action.payload.movie.id ? { ...m, favourite: true } : m
         ),
         upcoming: [...state.upcoming],
+        topRated: [...state.topRated]
       };
     case "remove-favourite":
       return {
@@ -18,33 +19,46 @@ const reducer = (state, action) => {
           m.id === action.payload.movie.id ? { ...m, favourite: false } : m
         ),
         upcoming: [...state.upcoming],
+        topRated: [...state.topRated]
       };
     case "add-wishlist":
       return {
         movies: state.movies.map((m) => {
-          return (m.id === action.payload.movieId) ? {...m, wishlist_ids: 
-            m?.wishlist_ids ? [...m?.wishlist_ids, action.payload.wishlistId] : [action.payload.wishlistId]
+          return (m.id === action.payload.movieId) ? {
+            ...m, wishlist_ids:
+              m?.wishlist_ids ? [...m?.wishlist_ids, action.payload.wishlistId] : [action.payload.wishlistId]
           } : m
         }
         ),
         upcoming: [...state.upcoming],
+        topRated: [...state.topRated]
       };
     case "remove-wishlist":
       return {
         movies: state.movies.map((m) =>
-          m.id === action.payload.movieId ? { ...m, wishlist_ids: [
-          ...m.wishlist_ids.filter(id => id != action.payload.wishlistId)
-          ] } : m
+          m.id === action.payload.movieId ? {
+            ...m, wishlist_ids: [
+              ...m.wishlist_ids.filter(id => id != action.payload.wishlistId)
+            ]
+          } : m
         ),
         upcoming: [...state.upcoming],
+        topRated: [...state.topRated],
       };
     case "load-discover-movies":
       return {
         movies: action.payload.movies,
-        upcoming: [...state.upcoming]
+        upcoming: [...state.upcoming],
+        topRated: [...state.topRated],
+      };
+    case "load-top-rated":
+      return {
+        movies: [...state.movies],
+        upcoming: [...state.upcoming],
+        topRated: action.payload.movies
       };
     case "load-upcoming":
-      return { upcoming: action.payload.movies, movies: [...state.movies] };
+      return { upcoming: action.payload.movies, movies: [...state.movies], topRated: [...state.topRated] };
     case "add-review":
       return {
         movies: state.movies.map((m) =>
@@ -53,6 +67,7 @@ const reducer = (state, action) => {
             : m
         ),
         upcoming: [...state.upcoming],
+        topRated: [...state.topRated]
       };
     default:
       return state;
@@ -60,7 +75,7 @@ const reducer = (state, action) => {
 };
 
 const MoviesContextProvider = (props) => {
-  const [state, dispatch] = useReducer(reducer, { movies: [], upcoming: [] });
+  const [state, dispatch] = useReducer(reducer, { movies: [], upcoming: [], topRated: [] });
 
   const addToFavorites = (movieId) => {
     const index = state.movies.map((m) => m.id).indexOf(movieId);
@@ -98,11 +113,20 @@ const MoviesContextProvider = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    getTopRatedMovies().then((movies) => {
+      dispatch({ type: "load-top-rated", payload: { movies } });
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+
   return (
     <MoviesContext.Provider
       value={{
         movies: state.movies,
         upcoming: state.upcoming,
+        topRated: state.topRated,
         addToFavorites: addToFavorites,
         addReview: addReview,
         removeFromFavourites: removeFromFavourites,

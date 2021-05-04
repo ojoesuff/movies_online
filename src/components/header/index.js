@@ -38,6 +38,7 @@ const Header = ({history}) => {
   const menuOptions = [
     { label: "Home", path: "/" },
     { label: "Upcoming", path: "/movies/upcoming" },
+    { label: "Top Rated", path: "/movies/top-rated"},
     { label: "Favourites", path: "/movies/favourites" },    
     { label: "Wishlist", path: "/wishlist" },
   ];

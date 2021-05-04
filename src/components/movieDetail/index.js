@@ -149,7 +149,6 @@ const MovieDetail = ({ movie, history }) => {
                         </AccordionDetails> : 
                             true}
                     </Accordion>
-                    <p>{JSON.stringify(movie, null, 2)}</p>
                 </Grid>                            
             </Grid>
             </div>

@@ -2,16 +2,15 @@ import { useContext } from "react";
 import TemplateMoviePage from "../components/templateMoviePage";
 import { MoviesContext } from "../contexts/moviesContext";
 
-function FavouritesPage() {
+function UpcomingPage() {
   const context = useContext(MoviesContext);
-  const { movies  } = context;
-  const favouriteMovies = movies.filter((m) => m.favourite);
-  const title = "Favourite Movies"
+  const { upcoming  } = context;
+  const title = "Upcoming Movies"
 
   return (
-    <TemplateMoviePage movies={favouriteMovies} title={title}>
+    <TemplateMoviePage movies={upcoming} title={title}>
     </TemplateMoviePage>
   );
 }
 
-export default FavouritesPage;
+export default UpcomingPage;
