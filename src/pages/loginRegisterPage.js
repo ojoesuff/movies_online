@@ -5,6 +5,8 @@ import { useForm } from "react-hook-form";
 import { Box, Button, makeStyles, Snackbar, TextField, Typography } from "@material-ui/core";
 import WarningIcon from '@material-ui/icons/Warning';
 import Alert from "@material-ui/lab/Alert";
+import { AuthContext } from '../contexts/authContext';
+import { Redirect } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
     loginForm: {
@@ -29,22 +31,33 @@ const useStyles = makeStyles((theme) => ({
 
 const LoginRegisterPage = ({
     match: {
-        params: { type },
-    },
+        params: { action },
+    }, props
 }) => {
     const title = "Login";
-    const { register, handleSubmit, formState: { errors }, reset } = useForm();
+    const { register, handleSubmit, formState: { errors } } = useForm();
     const [ snackOpen, setSnackOpen ] = useState(false);
     const classes = useStyles();
     const minPasswordLength = 8;
     const snackOpenDuration = 1000;
+    const context = useContext(AuthContext)
+    const [userName, setUserName] = useState("");
+    const [password, setPassword] = useState("");
 
     const onSubmit = (user) => {
-        // do something
+        login()
     };
+
+    const login = () => {
+        context.authenticate(userName, password);
+      };
 
     const handleSnackClose = () => {
         setSnackOpen(false);
+    }
+
+    if (context.isAuthenticated === true) {
+        return <Redirect to={"/"} />;
     }
 
     return (
@@ -68,6 +81,7 @@ const LoginRegisterPage = ({
             </Typography>
                         </Alert>
                     </Snackbar>
+      
                     <form
                         onSubmit={handleSubmit(onSubmit)}
                         noValidate
@@ -84,6 +98,10 @@ const LoginRegisterPage = ({
                             {...register('username', {
                                 required: "Username is required"
                             })}
+                            onChange={(e) => {
+                                setUserName(e.target.value);
+                            }}
+                            
                         />
                         {errors.username && (<Typography className={classes.error}><WarningIcon fontSize="small" />{" " + errors.username.message}</Typography>)}
 
@@ -95,11 +113,14 @@ const LoginRegisterPage = ({
                             type="password"
                             name="password"
                             label="Password"
-                            id="password"
+                            id="password"                            
                             {...register('password', {
                                 required: "Password is required",
                                 minLength: minPasswordLength
                             })}
+                            onChange={e => {
+                                setPassword(e.target.value);
+                            }}
                         />
                         {errors.password && errors.password.type == "required" && (<Typography className={classes.error}><WarningIcon fontSize="small" />{" Password is required"}</Typography>)}
                         {errors.password && errors.password.type == "minLength" && (<Typography className={classes.error}><WarningIcon fontSize="small" />{` ${minPasswordLength} minimum length`}</Typography>)}

@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 import MoviesContextProvider from "./contexts/moviesContext";
+import AuthContextProvider from "./contexts/authContext";
 import GenresContextProvider from "./contexts/genresContext";
 import WishlistsContextProvider from "./contexts/wishlistsContext";
 import Home from "./pages/homePage";
@@ -20,6 +21,7 @@ const App = () => {
       <MoviesContextProvider>
         <GenresContextProvider>
           <WishlistsContextProvider>
+            <AuthContextProvider>
             <Switch>
               {/* <Route exact path="/reviews/form" component={AddMovieReviewPage} />
             
@@ -31,10 +33,11 @@ const App = () => {
               <Route exact path="/movies/top-rated" component={TopRatedPage} />
               <Route exact path="/" component={Home} />
               <Route path="/reviews/:id" component={MovieReviewPage} />
-              <Route path="/login/:type" component={LoginRegisterPage} />
+              <Route path="/login/:action" component={LoginRegisterPage} />
               <Route path="/movies/:id" component={MovieDetailsPage} />
               <Redirect from="*" to="/" />
             </Switch>
+            </AuthContextProvider>
           </WishlistsContextProvider>
         </GenresContextProvider>
       </MoviesContextProvider>
