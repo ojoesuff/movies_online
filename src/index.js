@@ -11,6 +11,7 @@ import FavouritesPage from "./pages/favouritesPage"
 import WishlistPage from "./pages/wishlistPage"
 import UpcomingPage from "./pages/upcomingPage"
 import TopRatedPage from "./pages/topRatedPage"
+import LoginRegisterPage from "./pages/loginRegisterPage"
 
 
 const App = () => {
@@ -30,6 +31,7 @@ const App = () => {
               <Route exact path="/movies/top-rated" component={TopRatedPage} />
               <Route exact path="/" component={Home} />
               <Route path="/reviews/:id" component={MovieReviewPage} />
+              <Route path="/login/:type" component={LoginRegisterPage} />
               <Route path="/movies/:id" component={MovieDetailsPage} />
               <Redirect from="*" to="/" />
             </Switch>
