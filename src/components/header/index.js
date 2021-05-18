@@ -41,7 +41,7 @@ const Header = ({history}) => {
     { label: "Top Rated", path: "/movies/top-rated"},
     { label: "Favourites", path: "/movies/favourites" },    
     { label: "Wishlist", path: "/wishlist" },
-    { label: "Login", path: "/login/login" },
+    { label: "Login", path: "/user/login" },
   ];
 
   const handleMenuSelect = (pageUrl) => {

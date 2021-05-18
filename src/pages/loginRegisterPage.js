@@ -34,23 +34,32 @@ const LoginRegisterPage = ({
         params: { action },
     }, props
 }) => {
-    const title = "Login";
     const { register, handleSubmit, formState: { errors } } = useForm();
-    const [ snackOpen, setSnackOpen ] = useState(false);
+    const [snackOpen, setSnackOpen] = useState(false);
     const classes = useStyles();
     const minPasswordLength = 8;
     const snackOpenDuration = 1000;
     const context = useContext(AuthContext)
     const [userName, setUserName] = useState("");
     const [password, setPassword] = useState("");
+    const [passwordAgain, setPasswordAgain] = useState("");
+    const [registered, setRegistered] = useState(false);
+    const userRegister = action == "register"
+    const userLogin = action == "login"
+    const title = userRegister ? "Register" : "Login"
 
-    const onSubmit = (user) => {
-        login()
+    const onSubmit = () => {
+        if(userRegister) {
+            handleRegister()
+        }            
+        else {
+            login()
+        }            
     };
 
     const login = () => {
         context.authenticate(userName, password);
-      };
+    };
 
     const handleSnackClose = () => {
         setSnackOpen(false);
@@ -58,6 +67,16 @@ const LoginRegisterPage = ({
 
     if (context.isAuthenticated === true) {
         return <Redirect to={"/"} />;
+    }
+    if (registered === true) {
+        return <Redirect to="/" />;
+    }
+
+    const handleRegister = () => {
+        if (password === passwordAgain) {
+            context.register(userName, password);
+            setRegistered(true);
+        }
     }
 
     return (
@@ -77,11 +96,11 @@ const LoginRegisterPage = ({
                             onClose={handleSnackClose}
                         >
                             <Typography>
-                                Review submitted, thank you!
+                                User successfully created
             </Typography>
                         </Alert>
                     </Snackbar>
-      
+
                     <form
                         onSubmit={handleSubmit(onSubmit)}
                         noValidate
@@ -101,7 +120,7 @@ const LoginRegisterPage = ({
                             onChange={(e) => {
                                 setUserName(e.target.value);
                             }}
-                            
+
                         />
                         {errors.username && (<Typography className={classes.error}><WarningIcon fontSize="small" />{" " + errors.username.message}</Typography>)}
 
@@ -113,17 +132,40 @@ const LoginRegisterPage = ({
                             type="password"
                             name="password"
                             label="Password"
-                            id="password"                            
+                            id="password"
                             {...register('password', {
                                 required: "Password is required",
                                 minLength: minPasswordLength
                             })}
                             onChange={e => {
-                                setPassword(e.target.value);
+                                setPasswordAgain(e.target.value);
                             }}
                         />
                         {errors.password && errors.password.type == "required" && (<Typography className={classes.error}><WarningIcon fontSize="small" />{" Password is required"}</Typography>)}
                         {errors.password && errors.password.type == "minLength" && (<Typography className={classes.error}><WarningIcon fontSize="small" />{` ${minPasswordLength} minimum length`}</Typography>)}
+                        {userRegister ?
+                            <>
+                            <TextField
+                                className={classes.textField}
+                                variant="outlined"
+                                margin="normal"
+                                required
+                                type="password"
+                                name="passwordAgain"
+                                label="Repeat Password"
+                                id="passwordAgain"
+                                {...register('passwordAgain', {
+                                    required: "Password is required",
+                                    minLength: minPasswordLength
+                                })}
+                                onChange={e => {
+                                    setPassword(e.target.value);
+                                }}
+                            /> 
+                            {errors.passwordAgain && errors.passwordAgain.type == "required" && (<Typography className={classes.error}><WarningIcon fontSize="small" />{" Repeat Password is required"}</Typography>)}
+                        {errors.passwordAgain && errors.passwordAgain.type == "minLength" && (<Typography className={classes.error}><WarningIcon fontSize="small" />{` ${minPasswordLength} minimum length`}</Typography>)}
+                        </>
+                        : false}                        
                         <Box>
                             <Button
                                 className={classes.button}
@@ -131,8 +173,9 @@ const LoginRegisterPage = ({
                                 variant="contained"
                                 color="primary"
                             >
-                                Login
-            </Button>
+                                {userRegister ? "Submit" : "Login"}
+    </Button>
+
                         </Box>
                     </form>
                 </Box>

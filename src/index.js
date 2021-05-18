@@ -33,7 +33,7 @@ const App = () => {
               <Route exact path="/movies/top-rated" component={TopRatedPage} />
               <Route exact path="/" component={Home} />
               <Route path="/reviews/:id" component={MovieReviewPage} />
-              <Route path="/login/:action" component={LoginRegisterPage} />
+              <Route path="/user/:action" component={LoginRegisterPage} />
               <Route path="/movies/:id" component={MovieDetailsPage} />
               <Redirect from="*" to="/" />
             </Switch>
