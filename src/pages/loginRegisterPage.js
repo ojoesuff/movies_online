@@ -32,20 +32,17 @@ const useStyles = makeStyles((theme) => ({
 const LoginRegisterPage = ({
     match: {
         params: { action },
-    }, props
+    }
 }) => {
-    const { register, handleSubmit, formState: { errors } } = useForm();
-    const [snackOpen, setSnackOpen] = useState(false);
+    const { register, handleSubmit, formState: { errors }, watch } = useForm();
     const classes = useStyles();
     const minPasswordLength = 8;
-    const snackOpenDuration = 1000;
     const context = useContext(AuthContext)
     const [userName, setUserName] = useState("");
     const [password, setPassword] = useState("");
     const [passwordAgain, setPasswordAgain] = useState("");
     const [registered, setRegistered] = useState(false);
     const userRegister = action == "register"
-    const userLogin = action == "login"
     const title = userRegister ? "Register" : "Login"
 
     const onSubmit = () => {
@@ -58,12 +55,9 @@ const LoginRegisterPage = ({
     };
 
     const login = () => {
+        console.log("login()")
         context.authenticate(userName, password);
     };
-
-    const handleSnackClose = () => {
-        setSnackOpen(false);
-    }
 
     if (context.isAuthenticated === true) {
         return <Redirect to={"/"} />;
@@ -84,22 +78,6 @@ const LoginRegisterPage = ({
             <TemplatePage>
                 <PageTitle title={title} />
                 <Box className={classes.loginForm} component="div">
-                    <Snackbar
-                        autoHideDuration={snackOpenDuration}
-                        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-                        open={snackOpen}
-                        onClose={handleSnackClose}
-                    >
-                        <Alert
-                            severity="success"
-                            variant="filled"
-                            onClose={handleSnackClose}
-                        >
-                            <Typography>
-                                User successfully created
-            </Typography>
-                        </Alert>
-                    </Snackbar>
 
                     <form
                         onSubmit={handleSubmit(onSubmit)}
@@ -138,7 +116,7 @@ const LoginRegisterPage = ({
                                 minLength: minPasswordLength
                             })}
                             onChange={e => {
-                                setPasswordAgain(e.target.value);
+                                setPassword(e.target.value);
                             }}
                         />
                         {errors.password && errors.password.type == "required" && (<Typography className={classes.error}><WarningIcon fontSize="small" />{" Password is required"}</Typography>)}
@@ -155,15 +133,13 @@ const LoginRegisterPage = ({
                                 label="Repeat Password"
                                 id="passwordAgain"
                                 {...register('passwordAgain', {
-                                    required: "Password is required",
-                                    minLength: minPasswordLength
+                                    validate: (value) => value === watch('password') || "Passwords don't match."
                                 })}
                                 onChange={e => {
-                                    setPassword(e.target.value);
+                                    setPasswordAgain(e.target.value);
                                 }}
                             /> 
-                            {errors.passwordAgain && errors.passwordAgain.type == "required" && (<Typography className={classes.error}><WarningIcon fontSize="small" />{" Repeat Password is required"}</Typography>)}
-                        {errors.passwordAgain && errors.passwordAgain.type == "minLength" && (<Typography className={classes.error}><WarningIcon fontSize="small" />{` ${minPasswordLength} minimum length`}</Typography>)}
+                            {errors.passwordAgain && (<Typography className={classes.error}><WarningIcon fontSize="small" />{" Passwords do not match"}</Typography>)}
                         </>
                         : false}                        
                         <Box>

@@ -23,10 +23,6 @@ const App = () => {
           <WishlistsContextProvider>
             <AuthContextProvider>
             <Switch>
-              {/* <Route exact path="/reviews/form" component={AddMovieReviewPage} />
-            
-            
-            <Route exact path="/upcoming" component={UpcomingMoviesPage} /> */}
               <Route exact path="/wishlist" component={WishlistPage} />
               <Route exact path="/movies/favourites" component={FavouritesPage} />
               <Route exact path="/movies/upcoming" component={UpcomingPage} />

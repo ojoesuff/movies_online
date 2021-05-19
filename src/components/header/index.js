@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -12,6 +12,7 @@ import { useLocation, withRouter } from "react-router-dom";
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { ButtonGroup } from "@material-ui/core";
+import { AuthContext } from '../../contexts/authContext'
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -34,6 +35,7 @@ const Header = ({history}) => {
   const open = Boolean(anchorEl);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const context = useContext(AuthContext)
 
   const menuOptions = [
     { label: "Home", path: "/" },
@@ -41,7 +43,6 @@ const Header = ({history}) => {
     { label: "Top Rated", path: "/movies/top-rated"},
     { label: "Favourites", path: "/movies/favourites" },    
     { label: "Wishlist", path: "/wishlist" },
-    { label: "Login", path: "/user/login" },
   ];
 
   const handleMenuSelect = (pageUrl) => {
@@ -108,6 +109,17 @@ const Header = ({history}) => {
                       {opt.label}
                     </Button>
                   ))}
+                  {context.isAuthenicated === true ? 
+                  false :
+                  <Button
+                      className={selected == "/user/login" ?  classes.selected : ""}
+                      key="Login"
+                      color="inherit"
+                      onClick={() => handleMenuSelect("/user/login")}
+                    >
+                      Login
+                    </Button>}
+                  
               </ButtonGroup>
                 
               </>
