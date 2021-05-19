@@ -4,9 +4,8 @@ import PageTitle from "../components/pageTitle";
 import { useForm } from "react-hook-form";
 import { Box, Button, makeStyles, Snackbar, TextField, Typography } from "@material-ui/core";
 import WarningIcon from '@material-ui/icons/Warning';
-import Alert from "@material-ui/lab/Alert";
 import { AuthContext } from '../contexts/authContext';
-import { Redirect } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
     loginForm: {
@@ -83,6 +82,8 @@ const LoginRegisterPage = ({
                         onSubmit={handleSubmit(onSubmit)}
                         noValidate
                     >
+                        {userRegister ? false :
+                        <Typography>Already registered? Login <Link to="/user/register" color="inherit">here</Link>.</Typography>}                        
                         <TextField
                             className={classes.textField}
                             variant="outlined"
