@@ -61,6 +61,7 @@ const WishlistDetail = ({ history }) => {
     const { movies } = moviesContext
     const { wishlists } = wishlistContext
     const snackOpenDuration = 1000
+    const [rerenderComponent, setRerenderComponent] = useState(false);
 
     const handleModalOpen = () => {
         setModalOpen(true);
@@ -73,8 +74,14 @@ const WishlistDetail = ({ history }) => {
     const handleWishlistDelete = (id) => {
         setDeleteSnackOpen(true)
         wishlistContext.deleteWishlist(id)
-        history.push("/wishlist")
+        history.push("/wishlist/")
     }
+
+    const handleWishlistAdd = (wishlist) => { 
+        setSnackOpen(true);
+        wishlist.movies = []   
+        wishlistContext.addWishlist("username", wishlist);
+    };
 
     const handleSnackClose = e => {
         setSnackOpen(false);
@@ -90,9 +97,10 @@ const WishlistDetail = ({ history }) => {
     const onSubmit = (wishlist) => { 
         wishlist.movies = []   
         wishlistContext.addWishlist("username", wishlist);
+        
         setSnackOpen(true);
         reset();
-    };
+    };    
 
     const handleRemoveMovie = (wishlistId, movieId) => {
         setDeleteSnackOpen(true)
@@ -100,26 +108,26 @@ const WishlistDetail = ({ history }) => {
         history.replace("/wishlist")
     }
 
-    const getWishlistMovies = (wishlistId) => {
-        return movies.reduce((result, movie) => {
-            {
-                if (movie?.wishlist_ids?.includes(wishlistId)) {
-                    result.push({ id: movie.id, title: movie.title })
-                }
-                return result
-            }
-        }, [])
-    }
-    useEffect(() => {
-        if (wishlists?.length > 0) {
-            setWishlistMovies(wishlists.map(wishlist => (
-                {
-                    id: wishlist.id,
-                    movies: getWishlistMovies(wishlist.id)
-                }
-            )))
-        }
-    });
+    // const getWishlistMovies = (wishlistId) => {
+    //     return movies.reduce((result, movie) => {
+    //         {
+    //             if (movie?.wishlist_ids?.includes(wishlistId)) {
+    //                 result.push({ id: movie.id, title: movie.title })
+    //             }
+    //             return result
+    //         }
+    //     }, [])
+    // }
+    // useEffect(() => {
+    //     if (wishlists?.length > 0) {
+    //         setWishlistMovies(wishlists.map(wishlist => (
+    //             {
+    //                 id: wishlist.id,
+    //                 movies: getWishlistMovies(wishlist.id)
+    //             }
+    //         )))
+    //     }
+    // });
 
     const handleMoviePage = movieId => {
         history.push(`/movies/${movieId}`)
@@ -175,7 +183,7 @@ const WishlistDetail = ({ history }) => {
                                 </Alert>
                             </Snackbar>
                             <form
-                                onSubmit={handleSubmit(onSubmit)}
+                                // onSubmit={handleSubmit(onSubmit)}
                                 noValidate
                             >
                                 <TextField
@@ -195,6 +203,7 @@ const WishlistDetail = ({ history }) => {
                                 <Box>
                                     <Button
                                         className={classes.submitButton}
+                                        onClick={() => handleWishlistAdd({name: "Test now"})}
                                         type="submit"
                                         variant="contained"
                                         color="primary"

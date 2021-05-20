@@ -19,7 +19,7 @@ export const getTopRatedMovies = () => {
 export const getUpcomingMovies = () => {
   return fetch(
     // `https://api.themoviedb.org/3/movie/upcoming?api_key=${process.env.REACT_APP_TMDB_KEY}&language=en-US&include_adult=false&include_video=false&page=1`
-    `$/api/movies/upcoming`
+    `/api/movies/upcoming`
   )
     .then((res) => res.json())
     .then((json) => json.results);
