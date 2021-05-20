@@ -1,47 +1,12 @@
-import React, { createContext, useReducer } from "react";
+import React, { createContext, useEffect, useReducer, useState } from "react";
+import { getUserWishlists, addUserWishlist } from "../api/tmdb";
 
 export const WishlistsContext = createContext(null)
 
-// const reducer = (state, action) => {
-//   switch (action.type) {
-//     case "add-wishlist":
-//       return {
-//         movies: state.movies.map((m) =>
-//           m.id === action.payload.movie.id ? { ...m, favourite: true } : m
-//         ),
-//         wishlists: {...state.wishlists, action.payload.wishlist}
-//       };
-//     case "remove-favourite":
-//       return {
-//         movies: state.movies.map((m) =>
-//           m.id === action.payload.movie.id ? { ...m, favourite: false } : m
-//         ),
-//         upcoming: [...state.upcoming],
-//       };
-//     case "load-discover-movies":
-//       return {
-//         movies: action.payload.movies,
-//         upcoming: [...state.upcoming]
-//       };
-//     case "load-upcoming":
-//       return { upcoming: action.payload.movies, movies: [...state.movies] };
-//     case "add-review":
-//       return {
-//         movies: state.movies.map((m) =>
-//           m.id === action.payload.movie.id
-//             ? { ...m, review: action.payload.review }
-//             : m
-//         ),
-//         upcoming: [...state.upcoming],
-//       };
-//     default:
-//       return state;
-//   }
-// };
-
 const WishlistsContextProvider = props => {
   // const [state, dispatch] = useReducer(reducer, { wishlists: [] });
-  const wishlists = [{ id: 0, name: "Kids" }, { id: 1, name: "Horror" }];
+  const [wishlists, setWishlists] = useState([]);
+  const testUsername = "user1"
 
   // const addWishlist = (movieId) => {
   //   const index = state.movies.map((m) => m.id).indexOf(movieId);
@@ -57,13 +22,27 @@ const WishlistsContextProvider = props => {
     return Math.max(...wishlists.map(w => w.id)) + 1
   }
 
-  const addWishlist = wishlist => {
-    wishlists.push({ id: generateNextId(), name: wishlist.name })
-  }
+
 
   const deleteWishlist = id => {
     let index = wishlists.map(w => { return w.id; }).indexOf(id);
     wishlists.splice(index, 1);
+  }
+
+  useEffect(() => {
+    getUserWishlists(testUsername).then((wishlists) => {
+      setWishlists(wishlists);
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+    // const addWishlist = wishlist => {
+  //   wishlists.push({ id: generateNextId(), name: wishlist.name })
+  // }
+
+  const addWishlist = (username, wishlist) =>  {
+    console.log(wishlist)
+    addUserWishlist(testUsername, wishlist)
   }
 
   return (
@@ -72,6 +51,8 @@ const WishlistsContextProvider = props => {
         wishlists: wishlists,
         addWishlist: addWishlist,
         deleteWishlist: deleteWishlist,
+        getUserWishlists: getUserWishlists,
+        addWishlist: addWishlist
       }}
     >
       {props.children}

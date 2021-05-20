@@ -87,9 +87,10 @@ const WishlistDetail = ({ history }) => {
         history.push("/wishlist")
     };
 
-    const onSubmit = (wishlistName) => {
+    const onSubmit = (wishlist) => { 
+        wishlist.movies = []   
+        wishlistContext.addWishlist("username", wishlist);
         setSnackOpen(true);
-        wishlistContext.addWishlist(wishlistName);
         reset();
     };
 
@@ -216,8 +217,8 @@ const WishlistDetail = ({ history }) => {
                                         >
                                             <Typography  variant="h6">{wishlist.name}</Typography>
                                         </AccordionSummary>
-                                        {wishlistMovies.find(movie => movie.id == wishlist.id)?.movies?.length > 0 ?
-                                            wishlistMovies.find(movie => movie.id == wishlist.id).movies.map(m =>
+                                        {wishlist.movies.length > 0 ?
+                                            wishlist.movies.map(m =>
                                                 <AccordionDetails className={classes.accordian}>
                                                     <Button onClick={() => handleMoviePage(m.id)} className={classes.button}>
                                                         <Typography alt={m.title}>
