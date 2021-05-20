@@ -71,10 +71,10 @@ const WishlistDetail = ({ history }) => {
         setModalOpen(false);
     };
 
-    const handleWishlistDelete = (id) => {
+    const handleWishlistDelete = (wishlist) => {
         setDeleteSnackOpen(true)
-        wishlistContext.deleteWishlist(id)
-        history.push("/wishlist/")
+        wishlistContext.deleteWishlist("username", wishlist)
+        history.go(0)
     }
 
     const handleWishlistAdd = (wishlist) => { 
@@ -251,7 +251,7 @@ const WishlistDetail = ({ history }) => {
                                 <Grid item xs={2}>
                                     <Button
                                         variant="contained"
-                                        onClick={() => handleWishlistDelete(wishlist.id)}
+                                        onClick={() => handleWishlistDelete(wishlist)}
                                         color="secondary">
                                         Delete</Button>
                                 </Grid>

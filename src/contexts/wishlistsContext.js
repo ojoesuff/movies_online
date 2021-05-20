@@ -1,5 +1,5 @@
 import React, { createContext, useEffect, useReducer, useState } from "react";
-import { getUserWishlists, addUserWishlist } from "../api/tmdb";
+import { getUserWishlists, addUserWishlist, deleteUserWishlist } from "../api/tmdb";
 
 export const WishlistsContext = createContext(null)
 
@@ -22,12 +22,10 @@ const WishlistsContextProvider = props => {
     return Math.max(...wishlists.map(w => w.id)) + 1
   }
 
-
-
-  const deleteWishlist = id => {
-    let index = wishlists.map(w => { return w.id; }).indexOf(id);
-    wishlists.splice(index, 1);
-  }
+  // const deleteWishlist = id => {
+  //   let index = wishlists.map(w => { return w.id; }).indexOf(id);
+  //   wishlists.splice(index, 1);
+  // }
 
   useEffect(() => {
     getUserWishlists(testUsername).then((wishlists) => {
@@ -43,6 +41,11 @@ const WishlistsContextProvider = props => {
   const addWishlist = (username, wishlist) =>  {
     console.log(wishlist)
     addUserWishlist(testUsername, wishlist)
+  }
+
+  const deleteWishlist = (username, wishlist) =>  {
+    console.log(wishlist)
+    deleteUserWishlist(testUsername, wishlist)
   }
 
   return (

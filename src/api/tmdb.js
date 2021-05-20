@@ -70,12 +70,22 @@ export const getUserWishlists = (username) => {
 };
 
 export const addUserWishlist = async (username, wishlist) => {
-  console.log(wishlist)
   const res = await fetch(`/api/users/${username}/wishlists`, {
       headers: {
           'Content-Type': 'application/json'
       },
       method: 'post',
+      body: JSON.stringify({ wishlist })
+  })
+  return res.json();
+};
+
+export const deleteUserWishlist = async (username, wishlist) => {
+  const res = await fetch(`/api/users/${username}/wishlists`, {
+      headers: {
+          'Content-Type': 'application/json'
+      },
+      method: 'delete',
       body: JSON.stringify({ wishlist })
   })
   return res.json();
