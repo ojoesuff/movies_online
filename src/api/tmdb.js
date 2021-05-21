@@ -91,6 +91,17 @@ export const deleteUserWishlist = async (username, wishlist) => {
   return res.json();
 };
 
+export const addMovieWishlist = async (username, wishlistId, movieId) => {
+  const res = await fetch(`/api/users/${username}/wishlists/${wishlistId}`, {
+      headers: {
+          'Content-Type': 'application/json'
+      },
+      method: 'post',
+      body: JSON.stringify({ movieId : movieId })
+  })
+  return res.json();
+};
+
 export const login = async (username, password) => {
   const res = await fetch('/api/users', {
       headers: {

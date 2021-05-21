@@ -101,7 +101,8 @@ const MovieCard = ({ movie, history }) => {
 
     const handleAddToWishlist = (wishlistId, movieId) => {
         handleSnackOpen()
-        moviesContext.addWishlist(wishlistId, movieId)
+        wishlistContext.addMovieToWishlist("fakeUserName", wishlistId, movieId)
+        history.go(0)
     }
 
     const handleSnackClose = () => {
@@ -153,7 +154,7 @@ const MovieCard = ({ movie, history }) => {
                         <PlaylistAddCheckIcon
                             className={classes.wishlist}
                             fontSize="large"
-                            onClick={() => handleWishlist(movie.id)}
+                            onClick={() => handleWishlist(movie._id)}
                         />
                     </IconButton>
                 </CardActions>
@@ -190,7 +191,7 @@ const MovieCard = ({ movie, history }) => {
                                         className={classes.wishlistButton}
                                         variant="contained"
                                         color="primary"
-                                        onClick={() => handleAddToWishlist(wishlist.id, modalMovieId)}
+                                        onClick={() => handleAddToWishlist(wishlist._id, modalMovieId)}
                                         startIcon={<AddIcon />}
                                     >
                                         <Typography>{wishlist.name}</Typography>

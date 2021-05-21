@@ -61,7 +61,7 @@ const WishlistDetail = ({ history }) => {
     const { movies } = moviesContext
     const { wishlists } = wishlistContext
     const snackOpenDuration = 1000
-    const [rerenderComponent, setRerenderComponent] = useState(false);
+    const [wishlistName, setWishlistName] = useState("");
 
     const handleModalOpen = () => {
         setModalOpen(true);
@@ -197,13 +197,14 @@ const WishlistDetail = ({ history }) => {
                                     {...register('name', {
                                         required: "Name is required"
                                     })}
+                                    onChange={(e) => setWishlistName(e.target.value)}
                                 />
                                 {errors.name && (<Typography className={classes.error}><WarningIcon fontSize="small" />{" " + errors.name.message}</Typography>)}
 
                                 <Box>
                                     <Button
                                         className={classes.submitButton}
-                                        onClick={() => handleWishlistAdd({name: "Test now"})}
+                                        onClick={() => handleWishlistAdd({name: wishlistName})}
                                         type="submit"
                                         variant="contained"
                                         color="primary"
