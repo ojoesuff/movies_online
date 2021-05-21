@@ -86,12 +86,12 @@ const WishlistDetail = ({ history }) => {
     const handleSnackClose = e => {
         setSnackOpen(false);
         setModalOpen(false);
-        history.push("/wishlist")
+        history.go(0)
     };
 
     const handleDeleteSnackClose = e => {
         setDeleteSnackOpen(false);
-        history.push("/wishlist")
+        history.go(0)
     };
 
     const onSubmit = (wishlist) => { 
@@ -104,8 +104,7 @@ const WishlistDetail = ({ history }) => {
 
     const handleRemoveMovie = (wishlistId, movieId) => {
         setDeleteSnackOpen(true)
-        moviesContext.removeWishlist(wishlistId, movieId)
-        history.replace("/wishlist")
+        wishlistContext.removeMovieFromWishlist("username", wishlistId, movieId)
     }
 
     // const getWishlistMovies = (wishlistId) => {
@@ -236,7 +235,7 @@ const WishlistDetail = ({ history }) => {
                                                         </Typography>
                                                     </Button>
                                                     <IconButton
-                                                        onClick={() => handleRemoveMovie(wishlist.id, m.id)}
+                                                        onClick={() => handleRemoveMovie(wishlist._id, m._id)}
                                                     >
                                                         <DeleteIcon color="error" />
                                                     </IconButton>

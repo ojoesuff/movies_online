@@ -1,5 +1,5 @@
 import React, { createContext, useEffect, useReducer, useState } from "react";
-import { getUserWishlists, addUserWishlist, deleteUserWishlist, addMovieWishlist } from "../api/tmdb";
+import { getUserWishlists, addUserWishlist, deleteUserWishlist, addMovieWishlist, removeMovieWishlist } from "../api/tmdb";
 
 export const WishlistsContext = createContext(null)
 
@@ -47,6 +47,10 @@ const WishlistsContextProvider = props => {
     addMovieWishlist(testUsername, wishlistId, movieId)
   }
 
+  const removeMovieFromWishlist = (username, wishlistId, movieId) =>  {
+    removeMovieWishlist(testUsername, wishlistId, movieId)
+  }
+
   const deleteWishlist = (username, wishlist) =>  {
     console.log(wishlist)
     deleteUserWishlist(testUsername, wishlist)
@@ -60,7 +64,8 @@ const WishlistsContextProvider = props => {
         deleteWishlist: deleteWishlist,
         getUserWishlists: getUserWishlists,
         addWishlist: addWishlist,
-        addMovieToWishlist: addMovieToWishlist
+        addMovieToWishlist: addMovieToWishlist,
+        removeMovieFromWishlist: removeMovieFromWishlist
       }}
     >
       {props.children}
