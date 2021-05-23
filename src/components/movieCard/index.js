@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -58,18 +58,22 @@ const favouriteColour = (isFavourite) => {
     return isFavourite ? red : grey;
 };
 
-const MovieCard = ({ movie, history }) => {
-
-    const [isFavourite, setFavourite] = useState(movie?.favourite ? movie.favourite : false)
+const MovieCard = ({ movie, history }) => {    
     const [modalMovieId, setModalMovieId] = useState(null)
     const [snackOpen, setSnackOpen] = useState(false);
     const [modalOpen, setModalOpen] = useState(false)
     const moviesContext = useContext(MoviesContext);
     const wishlistContext = useContext(WishlistsContext);
+    const { favourites } = moviesContext
+    // const [isFavourite, setFavourite] = useState(false)
     const { wishlists } = wishlistContext
+    
     const snackOpenDuration = 500;
 
     const fakeUsername = "user1"
+
+    const isFavourite = favourites ? favourites.find(fav => fav._id == movie._id) ? true : false : false      
+
 
     const handleNavigation = (url) => {
         history.push(url);
@@ -77,7 +81,8 @@ const MovieCard = ({ movie, history }) => {
 
     const handleFavourite = (id) => {
         isFavourite ? removeFavourite(fakeUsername, id) : addFavourite(fakeUsername, id)
-        setFavourite(!isFavourite);
+        // setFavourite(!isFavourite);
+        // isFavourite = !isFavourite
     }
 
     const handleWishlist = (movieId) => {

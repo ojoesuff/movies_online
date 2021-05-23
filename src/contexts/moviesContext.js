@@ -78,11 +78,24 @@ const reducer = (state, action) => {
 
 const MoviesContextProvider = (props) => {
   const [state, dispatch] = useReducer(reducer, { movies: [], upcoming: [], topRated: [] });
-  const [favourites, setFavourites] = useState()
+  const [favourites, setFavourites] = useState(null)
 
   const addToFavorites = (username, movieId) => {
     setFavourites(addFavourite(fakeUsername, movieId))
   };
+
+  // const isFavouriteMovie = (movieId) => {
+  //   if(favourites) {
+  //     console.log(favourites)
+  //     console.log(movieId)
+  //     return favourites.find(fav => fav._id == movieId)
+  //   }      
+  //   else
+  //     return false
+  //   // getUserFavourites(fakeUsername).then((movies) => {
+  //   //   return movies.find(m => m._id == movieId)
+  //   // });
+  // };
 
   const removeFromFavourites = (username, movieId) => {
     removeFavourite(fakeUsername, movieId)
@@ -141,6 +154,7 @@ const MoviesContextProvider = (props) => {
         removeFromFavourites: removeFromFavourites,
         addWishlist: addWishlist,
         removeWishlist: removeWishlist,
+        // isFavouriteMovie: isFavouriteMovie,
       }}
     >
       {props.children}
