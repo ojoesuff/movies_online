@@ -24,7 +24,7 @@ const MovieDetailsPage = ({
   }) => {
     id = parseInt(id, 10);
     const context = useContext(MoviesContext);
-    const { movies  } = context;
+    const { movies } = context
     // const [movie] = useMovie(id)
     // const movieReview = movies[movies.map((m) => m.id).indexOf(id)]
     // const newMovie = {...movie, review: movieReview?.review}
