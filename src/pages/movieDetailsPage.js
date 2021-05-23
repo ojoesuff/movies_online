@@ -25,15 +25,16 @@ const MovieDetailsPage = ({
     id = parseInt(id, 10);
     const context = useContext(MoviesContext);
     const { movies  } = context;
-    const [movie] = useMovie(id)
-    const movieReview = movies[movies.map((m) => m.id).indexOf(id)]
-    const newMovie = {...movie, review: movieReview?.review}
+    // const [movie] = useMovie(id)
+    // const movieReview = movies[movies.map((m) => m.id).indexOf(id)]
+    // const newMovie = {...movie, review: movieReview?.review}
+    const movie = movies.find(m => m.id == id)
 
     return (
         <>
         {movie ? (
-          <TemplateDetailsPage movie={newMovie}>
-            <MovieDetail movie={newMovie}/>
+          <TemplateDetailsPage movie={movie}>
+            <MovieDetail movie={movie}/>
           </TemplateDetailsPage>
       ) : (
         <p>Loading movie details</p>

@@ -48,13 +48,13 @@ const AddReview = ({history, movie}) => {
     const handleSnackClose = e => {
         setSnackOpen(false);
         setModalOpen(false);
-        history.replace(`/movies/${movie.id}`)
+        // history.replace(`/movies/${movie.id}`)
+        history.go(0)
       };
 
     const onSubmit = (review) => {
-        review.id = movie.id;
         review.created_at = new Date();        
-        context.addReview(movie, review);
+        context.addReview(movie._id, review);
         reset();
         setSnackOpen(true);
     };

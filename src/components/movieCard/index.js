@@ -91,12 +91,12 @@ const MovieCard = ({ movie, history }) => {
 
     const addFavourite = (fakeUsername, id) => {
         moviesContext.addToFavorites(fakeUsername,id);
-        history.go(0)
+        // history.go(0)
     }
 
     const removeFavourite = (fakeUsername, id) => {
         moviesContext.removeFromFavourites(fakeUsername, id);
-        history.go(0)
+        // history.go(0)
     }
 
     const handleModalClose = () => {

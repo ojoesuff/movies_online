@@ -1,5 +1,6 @@
 import React, { useEffect, createContext, useReducer, useState } from "react";
-import { getMovies, getUpcomingMovies, getTopRatedMovies, addFavourite, removeFavourite, getUserFavourites } from "../api/tmdb";
+import { getMovies, getUpcomingMovies, getTopRatedMovies, addFavourite, 
+  addMovieReview, removeFavourite, getUserFavourites } from "../api/tmdb";
 
 export const MoviesContext = createContext(null);
 
@@ -101,8 +102,12 @@ const MoviesContextProvider = (props) => {
     removeFavourite(fakeUsername, movieId)
   };
 
-  const addReview = (movie, review) => {
-    dispatch({ type: "add-review", payload: { movie, review } });
+  // const addReview = (movie, review) => {
+  //   dispatch({ type: "add-review", payload: { movie, review } });
+  // };
+
+  const addReview = (movieId, review) => {
+    state.movies = addMovieReview(movieId, review)
   };
 
   const addWishlist = (wishlistId, movieId) => {

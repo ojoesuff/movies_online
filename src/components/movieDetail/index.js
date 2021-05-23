@@ -65,15 +65,16 @@ const MovieDetail = ({ movie, history }) => {
 
     const handleReviewPage = (review) => {
         history.push({
-            pathname: `/reviews/${review.id}`,
+            pathname: `/reviews/${review.id || review._id}`,
             state: { movie, review }
         })
     }
 
-    useEffect(() => 
+    useEffect(() => {
         getMovieReviews(movie.id)
-        .then(reviews => setReviews(reviews))
-    );
+        .then(reviews => setReviews(reviews));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+      }, []);
 
     return (
         <>
@@ -83,7 +84,7 @@ const MovieDetail = ({ movie, history }) => {
                     <Paper className={classes.paper}>
                         <Typography className={classes.title}>{movie.original_title} {year}</Typography>
                         <Divider/>
-                        <Typography className={classes.subtitle}variant="subtitle1">{movie.tagline.toUpperCase()}</Typography>
+                        {/* <Typography className={classes.subtitle}variant="subtitle1">{movie.tagline.toUpperCase()}</Typography> */}
                         <Typography variant="body1">{movie.overview}</Typography>
                         <IconButton href={movie.homepage} target="_blank">
                             <LanguageIcon/>
@@ -135,18 +136,21 @@ const MovieDetail = ({ movie, history }) => {
                             </AccordionDetails>                            
                             ) :
                             true
-                            } 
-                            {movie.review ? 
-                            <AccordionDetails  style={{display: "inline-block"}}>
-                            <Avatar alt={movie.review.author}>{movie.review.author.substring(0,1).toUpperCase()}</Avatar>
-                            <Typography variant="h6">{movie.review.author}</Typography>
+                            }
+                            {movie.reviews ? 
+                            movie.reviews.map(review => (
+                                <AccordionDetails  style={{display: "block"}}>
+                            <Avatar alt={review.author}>{review.author.substring(0,1).toUpperCase()}</Avatar>
+                            <Typography variant="h6">{review.author}</Typography>
                             <Divider/>
                             <ButtonBase
-                                onClick={() => handleReviewPage(movie.review)}
+                                onClick={() => handleReviewPage(review)}
                             >
-                                <Typography align="left">{`${previewReview(movie.review.content)}...READ MORE...`}</Typography> 
+                                <Typography align="left">{`${previewReview(review.content)}...READ MORE...`}</Typography> 
                             </ButtonBase>                                                               
-                        </AccordionDetails> : 
+                        </AccordionDetails>
+                            ))
+                             : 
                             true}
                     </Accordion>
                 </Grid>                            

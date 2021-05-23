@@ -125,7 +125,6 @@ export const removeFavourite = async (username, movieId) => {
 };
 
 export const getUserFavourites = (username) => {
-  console.log(username)
   return fetch(
     `/api/users/${username}/favourites`
   )
@@ -133,6 +132,17 @@ export const getUserFavourites = (username) => {
     .then((json) => {
       return json
     });
+};
+
+export const addMovieReview = async (movieId, review) => {
+  const res = await fetch(`/api/movies/${movieId}/reviews`, {
+      headers: {
+          'Content-Type': 'application/json'
+      },
+      method: 'post',
+      body: JSON.stringify(review)
+  })
+  return res.json();
 };
 
 export const removeMovieWishlist = async (username, wishlistId, movieId) => {
