@@ -102,6 +102,39 @@ export const addMovieWishlist = async (username, wishlistId, movieId) => {
   return res.json();
 };
 
+export const addFavourite = async (username, movieId) => {
+  const res = await fetch(`/api/users/${username}/favourites`, {
+      headers: {
+          'Content-Type': 'application/json'
+      },
+      method: 'post',
+      body: JSON.stringify({ movieId : movieId })
+  })
+  return res.json();
+};
+
+export const removeFavourite = async (username, movieId) => {
+  const res = await fetch(`/api/users/${username}/favourites`, {
+      headers: {
+          'Content-Type': 'application/json'
+      },
+      method: 'delete',
+      body: JSON.stringify({ movieId : movieId })
+  })
+  return res.json();
+};
+
+export const getUserFavourites = (username) => {
+  console.log(username)
+  return fetch(
+    `/api/users/${username}/favourites`
+  )
+    .then((res) => res.json())
+    .then((json) => {
+      return json
+    });
+};
+
 export const removeMovieWishlist = async (username, wishlistId, movieId) => {
   const res = await fetch(`/api/users/${username}/wishlists/${wishlistId}`, {
       headers: {

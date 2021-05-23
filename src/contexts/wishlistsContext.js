@@ -40,7 +40,7 @@ const WishlistsContextProvider = props => {
 
   const addWishlist = (username, wishlist) =>  {
     console.log(wishlist)
-    addUserWishlist(testUsername, wishlist)
+    wishlist = addUserWishlist(testUsername, wishlist)
   }
 
   const addMovieToWishlist = (username, wishlistId, movieId) =>  {

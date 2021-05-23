@@ -69,12 +69,14 @@ const MovieCard = ({ movie, history }) => {
     const { wishlists } = wishlistContext
     const snackOpenDuration = 500;
 
+    const fakeUsername = "user1"
+
     const handleNavigation = (url) => {
         history.push(url);
     };
 
     const handleFavourite = (id) => {
-        isFavourite ? removeFavourite(id) : addFavourite(id)
+        isFavourite ? removeFavourite(fakeUsername, id) : addFavourite(fakeUsername, id)
         setFavourite(!isFavourite);
     }
 
@@ -82,12 +84,14 @@ const MovieCard = ({ movie, history }) => {
         handleModalOpen(movieId)
     }
 
-    const addFavourite = (id) => {
-        moviesContext.addToFavorites(id);
+    const addFavourite = (fakeUsername, id) => {
+        moviesContext.addToFavorites(fakeUsername,id);
+        history.go(0)
     }
 
-    const removeFavourite = (id) => {
-        moviesContext.removeFromFavourites(id);
+    const removeFavourite = (fakeUsername, id) => {
+        moviesContext.removeFromFavourites(fakeUsername, id);
+        history.go(0)
     }
 
     const handleModalClose = () => {
@@ -147,7 +151,7 @@ const MovieCard = ({ movie, history }) => {
                         <FavoriteIcon
                             className={classes.favourite}
                             fontSize="large"
-                            onClick={() => handleFavourite(movie.id)}
+                            onClick={() => handleFavourite(movie._id)}
                         />
                     </IconButton>
                     <IconButton>

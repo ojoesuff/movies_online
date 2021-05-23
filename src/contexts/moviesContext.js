@@ -1,7 +1,9 @@
-import React, { useEffect, createContext, useReducer } from "react";
-import { getMovies, getUpcomingMovies, getTopRatedMovies } from "../api/tmdb";
+import React, { useEffect, createContext, useReducer, useState } from "react";
+import { getMovies, getUpcomingMovies, getTopRatedMovies, addFavourite, removeFavourite, getUserFavourites } from "../api/tmdb";
 
 export const MoviesContext = createContext(null);
+
+const fakeUsername = "user1"
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -76,15 +78,14 @@ const reducer = (state, action) => {
 
 const MoviesContextProvider = (props) => {
   const [state, dispatch] = useReducer(reducer, { movies: [], upcoming: [], topRated: [] });
+  const [favourites, setFavourites] = useState()
 
-  const addToFavorites = (movieId) => {
-    const index = state.movies.map((m) => m.id).indexOf(movieId);
-    dispatch({ type: "add-favourite", payload: { movie: state.movies[index] } });
+  const addToFavorites = (username, movieId) => {
+    setFavourites(addFavourite(fakeUsername, movieId))
   };
 
-  const removeFromFavourites = (movieId) => {
-    const index = state.movies.map((m) => m.id).indexOf(movieId);
-    dispatch({ type: "remove-favourite", payload: { movie: state.movies[index] } });
+  const removeFromFavourites = (username, movieId) => {
+    removeFavourite(fakeUsername, movieId)
   };
 
   const addReview = (movie, review) => {
@@ -120,6 +121,13 @@ const MoviesContextProvider = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    getUserFavourites(fakeUsername).then((movies) => {
+      setFavourites(movies)
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
 
   return (
     <MoviesContext.Provider
@@ -127,6 +135,7 @@ const MoviesContextProvider = (props) => {
         movies: state.movies,
         upcoming: state.upcoming,
         topRated: state.topRated,
+        favourites: favourites,
         addToFavorites: addToFavorites,
         addReview: addReview,
         removeFromFavourites: removeFromFavourites,
