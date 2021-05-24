@@ -36,6 +36,7 @@ const Header = ({history}) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const context = useContext(AuthContext)
+  const { isAuthenticated, userName } = context;
 
   const menuOptions = [
     { label: "Home", path: "/" },
@@ -109,7 +110,7 @@ const Header = ({history}) => {
                       {opt.label}
                     </Button>
                   ))}
-                  {context.isAuthenicated === true ? 
+                  {isAuthenticated ? 
                   false :
                   <Button
                       className={selected == "/user/login" ?  classes.selected : ""}

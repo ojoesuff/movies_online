@@ -9,7 +9,7 @@ const TemplatePage = (props) => {
   return (
     <>
     <Theme>
-      <Header />
+      {/* <Header /> */}
         {props.children}      
       <Footer /> 
     </Theme>

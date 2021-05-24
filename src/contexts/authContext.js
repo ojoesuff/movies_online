@@ -37,11 +37,11 @@ const AuthContextProvider = (props) => {
   return (
     <AuthContext.Provider
       value={{
-        isAuthenticated,
-        authenticate,
-        register,
-        signout,
-        userName
+        isAuthenticated : isAuthenticated,
+        authenticate : authenticate,
+        register : register,
+        signout : signout,
+        userName : userName
       }}
     >
       {props.children}

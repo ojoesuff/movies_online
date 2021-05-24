@@ -13,6 +13,7 @@ import WishlistPage from "./pages/wishlistPage"
 import UpcomingPage from "./pages/upcomingPage"
 import TopRatedPage from "./pages/topRatedPage"
 import LoginRegisterPage from "./pages/loginRegisterPage"
+import Header from './components/header'
 
 
 const App = () => {
@@ -22,6 +23,7 @@ const App = () => {
         <GenresContextProvider>
           <WishlistsContextProvider>
             <AuthContextProvider>
+              <Header />
             <Switch>
               <Route exact path="/wishlist" component={WishlistPage} />
               <Route exact path="/movies/favourites" component={FavouritesPage} />
