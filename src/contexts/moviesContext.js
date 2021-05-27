@@ -4,8 +4,6 @@ import { getMovies, getUpcomingMovies, getTopRatedMovies, addFavourite,
 
 export const MoviesContext = createContext(null);
 
-const fakeUsername = "user1"
-
 const reducer = (state, action) => {
   switch (action.type) {
     case "add-favourite":
@@ -82,7 +80,7 @@ const MoviesContextProvider = (props) => {
   const [favourites, setFavourites] = useState(null)
 
   const addToFavorites = (username, movieId) => {
-    addFavourite(fakeUsername, movieId).then((movies) => {
+    addFavourite(username, movieId).then((movies) => {
       setFavourites(movies)
     });   
   };
@@ -101,7 +99,7 @@ const MoviesContextProvider = (props) => {
   // };
 
   const removeFromFavourites = (username, movieId) => {
-    removeFavourite(fakeUsername, movieId).then((movies) => {
+    removeFavourite(username, movieId).then((movies) => {
       console.log(movies)
       setFavourites(movies)
     });  
@@ -144,12 +142,18 @@ const MoviesContextProvider = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => {
-    getUserFavourites(fakeUsername).then((movies) => {
+  // useEffect(() => {
+  //   getUserFavourites(username).then((movies) => {
+  //     setFavourites(movies)
+  //   });
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
+
+  const getFavourites = (username) => {
+    getUserFavourites(username).then(movies => 
       setFavourites(movies)
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    )
+  }
 
 
   return (
@@ -159,6 +163,7 @@ const MoviesContextProvider = (props) => {
         upcoming: state.upcoming,
         topRated: state.topRated,
         favourites: favourites,
+        getFavourites: getFavourites,
         addToFavorites: addToFavorites,
         addReview: addReview,
         removeFromFavourites: removeFromFavourites,

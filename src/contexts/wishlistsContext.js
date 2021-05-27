@@ -1,12 +1,14 @@
-import React, { createContext, useEffect, useReducer, useState } from "react";
+import React, { createContext, useContext, useEffect, useReducer, useState } from "react";
 import { getUserWishlists, addUserWishlist, deleteUserWishlist, addMovieWishlist, removeMovieWishlist } from "../api/tmdb";
+// import { AuthContext } from '../contexts/authContext'
 
 export const WishlistsContext = createContext(null)
 
 const WishlistsContextProvider = props => {
   // const [state, dispatch] = useReducer(reducer, { wishlists: [] });
   const [wishlists, setWishlists] = useState([]);
-  const testUsername = "user1"
+  // const authContext = useContext(AuthContext);
+  // const { userName } = authContext
 
   // const addWishlist = (movieId) => {
   //   const index = state.movies.map((m) => m.id).indexOf(movieId);
@@ -27,40 +29,45 @@ const WishlistsContextProvider = props => {
   //   wishlists.splice(index, 1);
   // }
 
-  useEffect(() => {
-    getUserWishlists(testUsername).then((wishlists) => {
-      setWishlists(wishlists);
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // useEffect(() => {
+  //   getUserWishlists(userName).then((wishlists) => {
+  //     setWishlists(wishlists);
+  //   });
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
+  const getWishlists = (username, wishlist) =>  {
+    wishlist = getUserWishlists(username, wishlist).then(wishlists => {
+      setWishlists(wishlists);
+    })
+  }
     // const addWishlist = wishlist => {
   //   wishlists.push({ id: generateNextId(), name: wishlist.name })
   // }
 
   const addWishlist = (username, wishlist) =>  {
-    wishlist = addUserWishlist(testUsername, wishlist).then(wishlists => {
+    wishlist = addUserWishlist(username, wishlist).then(wishlists => {
       setWishlists(wishlists);
     })
   }
 
   const addMovieToWishlist = (username, wishlistId, movieId) =>  {
     console.log("addMovieToWishlist in wishlistcontext: " + movieId)
-    addMovieWishlist(testUsername, wishlistId, movieId).then(wishlists => {
+    addMovieWishlist(username, wishlistId, movieId).then(wishlists => {
       setWishlists(wishlists);
     })
   }
 
   const removeMovieFromWishlist = (username, wishlistId, movieId) =>  {
     console.log("Wishlist ID from removeMovieFromWishlist in context: " + wishlistId)
-    removeMovieWishlist(testUsername, wishlistId, movieId).then(wishlists => {
+    removeMovieWishlist(username, wishlistId, movieId).then(wishlists => {
       setWishlists(wishlists)
     })
   }
 
   const deleteWishlist = (username, wishlist) =>  {
     console.log(wishlist)
-    deleteUserWishlist(testUsername, wishlist).then(wishlists => {
+    deleteUserWishlist(username, wishlist).then(wishlists => {
       setWishlists(wishlists)
     })
   }
@@ -71,7 +78,7 @@ const WishlistsContextProvider = props => {
         wishlists: wishlists,
         addWishlist: addWishlist,
         deleteWishlist: deleteWishlist,
-        getUserWishlists: getUserWishlists,
+        getWishlists: getWishlists,
         addWishlist: addWishlist,
         addMovieToWishlist: addMovieToWishlist,
         removeMovieFromWishlist: removeMovieFromWishlist

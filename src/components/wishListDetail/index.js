@@ -7,6 +7,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import { WishlistsContext } from "../../contexts/wishlistsContext";
 import { MoviesContext } from "../../contexts/moviesContext";
+import { AuthContext } from "../../contexts/authContext";
 import { withRouter } from 'react-router';
 import { useForm } from 'react-hook-form';
 import Alert from '@material-ui/lab/Alert';
@@ -57,10 +58,17 @@ const WishlistDetail = ({ history }) => {
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
     const wishlistContext = useContext(WishlistsContext);
     const moviesContext = useContext(MoviesContext);
+    const authContext = useContext(AuthContext)
     // const { movies } = moviesContext
-    const { wishlists } = wishlistContext
+    const { wishlists, getWishlists } = wishlistContext
+    const { userName } = authContext
     const snackOpenDuration = 1000
     const [wishlistName, setWishlistName] = useState("");
+
+    useEffect(() => {
+        getWishlists(userName)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const handleModalOpen = () => {
         setModalOpen(true);
@@ -72,14 +80,14 @@ const WishlistDetail = ({ history }) => {
 
     const handleWishlistDelete = (wishlist) => {
         setDeleteSnackOpen(true)
-        wishlistContext.deleteWishlist("username", wishlist)
+        wishlistContext.deleteWishlist(userName, wishlist)
         // history.go(0)
     }
 
-    const handleWishlistAdd = (wishlist) => { 
+    const handleWishlistAdd = (wishlist) => {
         setSnackOpen(true);
-        wishlist.movies = []   
-        wishlistContext.addWishlist("username", wishlist);
+        wishlist.movies = []
+        wishlistContext.addWishlist(userName, wishlist);
     };
 
     const handleSnackClose = e => {
@@ -93,17 +101,17 @@ const WishlistDetail = ({ history }) => {
         // history.go(0)
     };
 
-    const onSubmit = (wishlist) => { 
-        wishlist.movies = []   
-        wishlistContext.addWishlist("username", wishlist);
-        
+    const onSubmit = (wishlist) => {
+        wishlist.movies = []
+        wishlistContext.addWishlist(userName, wishlist);
+
         setSnackOpen(true);
         reset();
-    };    
+    };
 
     const handleRemoveMovie = (wishlistId, movieId) => {
         setDeleteSnackOpen(true)
-        wishlistContext.removeMovieFromWishlist("username", wishlistId, movieId)
+        wishlistContext.removeMovieFromWishlist(userName, wishlistId, movieId)
     }
 
     // const getWishlistMovies = (wishlistId) => {
@@ -202,7 +210,7 @@ const WishlistDetail = ({ history }) => {
                                 <Box>
                                     <Button
                                         className={classes.submitButton}
-                                        onClick={() => handleWishlistAdd({name: wishlistName})}
+                                        onClick={() => handleWishlistAdd({ name: wishlistName })}
                                         type="submit"
                                         variant="contained"
                                         color="primary"
@@ -220,13 +228,13 @@ const WishlistDetail = ({ history }) => {
                             <>
                                 <Grid item xs={8}>
                                     <Accordion style={{ opacity: 0.9 }}>
-                                        <AccordionSummary 
+                                        <AccordionSummary
                                             expandIcon={<ExpandMoreIcon />}
                                         >
-                                            <Typography  variant="h6">{wishlist.name}</Typography>
+                                            <Typography variant="h6">{wishlist.name}</Typography>
                                         </AccordionSummary>
                                         {wishlist.movies.length > 0 ?
-                                            wishlist.movies.map((m) => 
+                                            wishlist.movies.map((m) =>
                                                 <AccordionDetails className={classes.accordian}>
                                                     <Button onClick={() => handleMoviePage(m.id)} className={classes.button}>
                                                         <Typography alt={m.title}>

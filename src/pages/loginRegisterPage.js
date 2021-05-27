@@ -54,7 +54,6 @@ const LoginRegisterPage = ({
     };
 
     const login = () => {
-        console.log("login()")
         context.authenticate(userName, password);
     };
 

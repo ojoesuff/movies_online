@@ -16,6 +16,7 @@ import { getYear } from '../../utilities';
 import { withRouter } from "react-router-dom";
 import { MoviesContext } from "../../contexts/moviesContext";
 import { WishlistsContext } from "../../contexts/wishlistsContext";
+import { AuthContext } from "../../contexts/authContext";
 import PlaylistAddCheckIcon from '@material-ui/icons/PlaylistAddCheck';
 import AddIcon from '@material-ui/icons/Add';
 import Alert from '@material-ui/lab/Alert';
@@ -60,13 +61,13 @@ const MovieCard = ({ movie, history }) => {
     const [modalOpen, setModalOpen] = useState(false)
     const moviesContext = useContext(MoviesContext);
     const wishlistContext = useContext(WishlistsContext);
+    const authContext = useContext(AuthContext);
+    const {userName} = authContext
     const { favourites } = moviesContext
     const [isFavourite, setFavourite] = useState(false)
     const { wishlists } = wishlistContext
     
     const snackOpenDuration = 500;
-
-    const fakeUsername = "user1"
 
     // let isFavourite = favourites?.length > 0 ? favourites.find(fav => fav._id == movie._id) ? true : false : false  
     
@@ -82,7 +83,7 @@ const MovieCard = ({ movie, history }) => {
 
     const handleFavourite = (id) => {
         setFavourite(!isFavourite);
-        isFavourite ? removeFavourite(fakeUsername, id) : addFavourite(fakeUsername, id)        
+        isFavourite ? removeFavourite(id) : addFavourite(id)        
         // isFavourite = !isFavourite
     }
 
@@ -90,13 +91,13 @@ const MovieCard = ({ movie, history }) => {
         handleModalOpen(movieId)
     }
 
-    const addFavourite = (fakeUsername, id) => {
-        moviesContext.addToFavorites(fakeUsername,id);
+    const addFavourite = (id) => {
+        moviesContext.addToFavorites(userName,id);
         // history.go(0)
     }
 
-    const removeFavourite = (fakeUsername, id) => {
-        moviesContext.removeFromFavourites(fakeUsername, id);
+    const removeFavourite = (id) => {
+        moviesContext.removeFromFavourites(userName, id);
         // history.go(0)
     }
 
@@ -111,7 +112,7 @@ const MovieCard = ({ movie, history }) => {
 
     const handleAddToWishlist = (wishlistId, movieId) => {
         handleSnackOpen()
-        wishlistContext.addMovieToWishlist("fakeUserName", wishlistId, movieId)
+        wishlistContext.addMovieToWishlist(userName, wishlistId, movieId)
         // history.go(0)
     }
 
