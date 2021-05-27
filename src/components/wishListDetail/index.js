@@ -51,14 +51,13 @@ const useStyles = makeStyles((theme) => ({
 
 const WishlistDetail = ({ history }) => {
     const classes = useStyles();
-    const [wishlistMovies, setWishlistMovies] = useState([])
     const [modalOpen, setModalOpen] = useState(false);
     const [snackOpen, setSnackOpen] = useState(false);
     const [deleteSnackOpen, setDeleteSnackOpen] = useState(false);
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
     const wishlistContext = useContext(WishlistsContext);
     const moviesContext = useContext(MoviesContext);
-    const { movies } = moviesContext
+    // const { movies } = moviesContext
     const { wishlists } = wishlistContext
     const snackOpenDuration = 1000
     const [wishlistName, setWishlistName] = useState("");
@@ -74,7 +73,7 @@ const WishlistDetail = ({ history }) => {
     const handleWishlistDelete = (wishlist) => {
         setDeleteSnackOpen(true)
         wishlistContext.deleteWishlist("username", wishlist)
-        history.go(0)
+        // history.go(0)
     }
 
     const handleWishlistAdd = (wishlist) => { 
@@ -86,12 +85,12 @@ const WishlistDetail = ({ history }) => {
     const handleSnackClose = e => {
         setSnackOpen(false);
         setModalOpen(false);
-        history.go(0)
+        // history.go(0)
     };
 
     const handleDeleteSnackClose = e => {
         setDeleteSnackOpen(false);
-        history.go(0)
+        // history.go(0)
     };
 
     const onSubmit = (wishlist) => { 
@@ -182,7 +181,7 @@ const WishlistDetail = ({ history }) => {
                                 </Alert>
                             </Snackbar>
                             <form
-                                // onSubmit={handleSubmit(onSubmit)}
+                                onSubmit={e => e.preventDefault()}
                                 noValidate
                             >
                                 <TextField
@@ -227,11 +226,11 @@ const WishlistDetail = ({ history }) => {
                                             <Typography  variant="h6">{wishlist.name}</Typography>
                                         </AccordionSummary>
                                         {wishlist.movies.length > 0 ?
-                                            wishlist.movies.map(m =>
+                                            wishlist.movies.map((m) => 
                                                 <AccordionDetails className={classes.accordian}>
                                                     <Button onClick={() => handleMoviePage(m.id)} className={classes.button}>
                                                         <Typography alt={m.title}>
-                                                            {`${m.title}`}
+                                                            {m.title ? m.title : false}
                                                         </Typography>
                                                     </Button>
                                                     <IconButton

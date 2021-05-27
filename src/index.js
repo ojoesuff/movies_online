@@ -14,11 +14,13 @@ import UpcomingPage from "./pages/upcomingPage"
 import TopRatedPage from "./pages/topRatedPage"
 import LoginRegisterPage from "./pages/loginRegisterPage"
 import Header from './components/header'
+import Theme from "../src/components/theme";
 
 
 const App = () => {
   return (
     <BrowserRouter>
+    <Theme>
       <MoviesContextProvider>
         <GenresContextProvider>
           <WishlistsContextProvider>
@@ -39,6 +41,7 @@ const App = () => {
           </WishlistsContextProvider>
         </GenresContextProvider>
       </MoviesContextProvider>
+      </Theme>
     </BrowserRouter>
   );
 };

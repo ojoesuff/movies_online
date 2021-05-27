@@ -39,21 +39,30 @@ const WishlistsContextProvider = props => {
   // }
 
   const addWishlist = (username, wishlist) =>  {
-    console.log(wishlist)
-    wishlist = addUserWishlist(testUsername, wishlist)
+    wishlist = addUserWishlist(testUsername, wishlist).then(wishlists => {
+      setWishlists(wishlists);
+    })
   }
 
   const addMovieToWishlist = (username, wishlistId, movieId) =>  {
-    addMovieWishlist(testUsername, wishlistId, movieId)
+    console.log("addMovieToWishlist in wishlistcontext: " + movieId)
+    addMovieWishlist(testUsername, wishlistId, movieId).then(wishlists => {
+      setWishlists(wishlists);
+    })
   }
 
   const removeMovieFromWishlist = (username, wishlistId, movieId) =>  {
-    removeMovieWishlist(testUsername, wishlistId, movieId)
+    console.log("Wishlist ID from removeMovieFromWishlist in context: " + wishlistId)
+    removeMovieWishlist(testUsername, wishlistId, movieId).then(wishlists => {
+      setWishlists(wishlists)
+    })
   }
 
   const deleteWishlist = (username, wishlist) =>  {
     console.log(wishlist)
-    deleteUserWishlist(testUsername, wishlist)
+    deleteUserWishlist(testUsername, wishlist).then(wishlists => {
+      setWishlists(wishlists)
+    })
   }
 
   return (

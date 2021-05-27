@@ -83,7 +83,6 @@ const MoviesContextProvider = (props) => {
 
   const addToFavorites = (username, movieId) => {
     addFavourite(fakeUsername, movieId).then((movies) => {
-      console.log(movies)
       setFavourites(movies)
     });   
   };
@@ -102,7 +101,10 @@ const MoviesContextProvider = (props) => {
   // };
 
   const removeFromFavourites = (username, movieId) => {
-    removeFavourite(fakeUsername, movieId)
+    removeFavourite(fakeUsername, movieId).then((movies) => {
+      console.log(movies)
+      setFavourites(movies)
+    });  
   };
 
   // const addReview = (movie, review) => {
