@@ -28,9 +28,9 @@ const useStyles = makeStyles((theme) => ({
     media: {
         height: 250,
     },
-    favourite: {
-        color: (isFavourite) => favouriteColour(isFavourite)[500],
-    },
+    // favourite: {
+    //     color: (isFavourite) => favouriteColour(isFavourite)[500],
+    // },
     title: {
         minHeight: 80,
         maxHeight: 200,
@@ -54,10 +54,6 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-const favouriteColour = (isFavourite) => {
-    return isFavourite ? red : grey;
-};
-
 const MovieCard = ({ movie, history }) => {    
     const [modalMovieId, setModalMovieId] = useState(null)
     const [snackOpen, setSnackOpen] = useState(false);
@@ -65,14 +61,19 @@ const MovieCard = ({ movie, history }) => {
     const moviesContext = useContext(MoviesContext);
     const wishlistContext = useContext(WishlistsContext);
     const { favourites } = moviesContext
-    // const [isFavourite, setFavourite] = useState(false)
+    const [isFavourite, setFavourite] = useState(false)
     const { wishlists } = wishlistContext
     
     const snackOpenDuration = 500;
 
     const fakeUsername = "user1"
 
-    const isFavourite = favourites ? favourites.find(fav => fav._id == movie._id) ? true : false : false      
+    // let isFavourite = favourites?.length > 0 ? favourites.find(fav => fav._id == movie._id) ? true : false : false  
+    
+    useEffect(() => {
+        setFavourite(favourites?.length > 0 ? favourites.find(fav => fav._id == movie._id) ? true : false : false )
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+      });
 
 
     const handleNavigation = (url) => {
@@ -80,8 +81,8 @@ const MovieCard = ({ movie, history }) => {
     };
 
     const handleFavourite = (id) => {
-        isFavourite ? removeFavourite(fakeUsername, id) : addFavourite(fakeUsername, id)
-        // setFavourite(!isFavourite);
+        setFavourite(!isFavourite);
+        isFavourite ? removeFavourite(fakeUsername, id) : addFavourite(fakeUsername, id)        
         // isFavourite = !isFavourite
     }
 
@@ -111,7 +112,7 @@ const MovieCard = ({ movie, history }) => {
     const handleAddToWishlist = (wishlistId, movieId) => {
         handleSnackOpen()
         wishlistContext.addMovieToWishlist("fakeUserName", wishlistId, movieId)
-        history.go(0)
+        // history.go(0)
     }
 
     const handleSnackClose = () => {
@@ -121,6 +122,10 @@ const MovieCard = ({ movie, history }) => {
 
     const handleSnackOpen = () => {
         setSnackOpen(true)
+    }
+
+    const favouriteColour = () => {
+        return isFavourite ? red[500] : grey[500]
     }
 
     const classes = useStyles(isFavourite);
@@ -156,6 +161,7 @@ const MovieCard = ({ movie, history }) => {
                         <FavoriteIcon
                             className={classes.favourite}
                             fontSize="large"
+                            style={{ color: favouriteColour() }}
                             onClick={() => handleFavourite(movie._id)}
                         />
                     </IconButton>

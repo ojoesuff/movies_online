@@ -82,7 +82,10 @@ const MoviesContextProvider = (props) => {
   const [favourites, setFavourites] = useState(null)
 
   const addToFavorites = (username, movieId) => {
-    setFavourites(addFavourite(fakeUsername, movieId))
+    addFavourite(fakeUsername, movieId).then((movies) => {
+      console.log(movies)
+      setFavourites(movies)
+    });   
   };
 
   // const isFavouriteMovie = (movieId) => {

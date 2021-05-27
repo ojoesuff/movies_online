@@ -23,7 +23,7 @@ const App = () => {
         <GenresContextProvider>
           <WishlistsContextProvider>
             <AuthContextProvider>
-              <Header />
+              <Header />              
             <Switch>
               <Route exact path="/wishlist" component={WishlistPage} />
               <Route exact path="/movies/favourites" component={FavouritesPage} />
