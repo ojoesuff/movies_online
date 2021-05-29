@@ -93,7 +93,7 @@ const MovieDetail = ({ movie, history }) => {
                 <Grid item lg={2} md={2} sm={6} xs={6}>
                     <Paper 
                         border={2}
-                        className={classes.paper} 
+                        className={classes.poster} 
                         elevation={2} 
                         style={{backgroundImage:`${posterUrl}`}}>
                     </Paper>
