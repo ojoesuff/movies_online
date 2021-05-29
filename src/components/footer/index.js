@@ -53,7 +53,7 @@ const Footer = (props) => {
      <Toolbar>        
        <ButtonGroup className={classes.buttonGroup}>
           {socialMedia.map(link => (
-            <IconButton href={link.path} target="_blank" className={classes.button}>
+            <IconButton key={link.path} href={link.path} target="_blank" className={classes.button}>
             {link.icon}
           </IconButton>
           ))}

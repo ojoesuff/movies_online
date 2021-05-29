@@ -1,12 +1,11 @@
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from "@material-ui/core/styles";
-import { Accordion, AccordionDetails, AccordionSummary, Box, Button, ButtonBase, Divider, IconButton, Modal, Snackbar, TextField, Typography } from "@material-ui/core";
+import { Accordion, AccordionDetails, AccordionSummary, Box, Button, IconButton, Modal, Snackbar, TextField, Typography } from "@material-ui/core";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { useContext, useEffect, useState } from 'react';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import { WishlistsContext } from "../../contexts/wishlistsContext";
-import { MoviesContext } from "../../contexts/moviesContext";
 import { AuthContext } from "../../contexts/authContext";
 import { withRouter } from 'react-router';
 import { useForm } from 'react-hook-form';
@@ -55,11 +54,9 @@ const WishlistDetail = ({ history }) => {
     const [modalOpen, setModalOpen] = useState(false);
     const [snackOpen, setSnackOpen] = useState(false);
     const [deleteSnackOpen, setDeleteSnackOpen] = useState(false);
-    const { register, handleSubmit, formState: { errors }, reset } = useForm();
+    const { register, formState: { errors } } = useForm();
     const wishlistContext = useContext(WishlistsContext);
-    const moviesContext = useContext(MoviesContext);
     const authContext = useContext(AuthContext)
-    // const { movies } = moviesContext
     const { wishlists, getWishlists } = wishlistContext
     const { userName } = authContext
     const snackOpenDuration = 1000
@@ -81,7 +78,6 @@ const WishlistDetail = ({ history }) => {
     const handleWishlistDelete = (wishlist) => {
         setDeleteSnackOpen(true)
         wishlistContext.deleteWishlist(userName, wishlist)
-        // history.go(0)
     }
 
     const handleWishlistAdd = (wishlist) => {
@@ -93,47 +89,16 @@ const WishlistDetail = ({ history }) => {
     const handleSnackClose = e => {
         setSnackOpen(false);
         setModalOpen(false);
-        // history.go(0)
     };
 
     const handleDeleteSnackClose = e => {
         setDeleteSnackOpen(false);
-        // history.go(0)
-    };
-
-    const onSubmit = (wishlist) => {
-        wishlist.movies = []
-        wishlistContext.addWishlist(userName, wishlist);
-
-        setSnackOpen(true);
-        reset();
     };
 
     const handleRemoveMovie = (wishlistId, movieId) => {
         setDeleteSnackOpen(true)
         wishlistContext.removeMovieFromWishlist(userName, wishlistId, movieId)
     }
-
-    // const getWishlistMovies = (wishlistId) => {
-    //     return movies.reduce((result, movie) => {
-    //         {
-    //             if (movie?.wishlist_ids?.includes(wishlistId)) {
-    //                 result.push({ id: movie.id, title: movie.title })
-    //             }
-    //             return result
-    //         }
-    //     }, [])
-    // }
-    // useEffect(() => {
-    //     if (wishlists?.length > 0) {
-    //         setWishlistMovies(wishlists.map(wishlist => (
-    //             {
-    //                 id: wishlist.id,
-    //                 movies: getWishlistMovies(wishlist.id)
-    //             }
-    //         )))
-    //     }
-    // });
 
     const handleMoviePage = movieId => {
         history.push(`/movies/${movieId}`)

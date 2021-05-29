@@ -53,7 +53,7 @@ const LoginRegisterPage = ({
     const [passwordAgain, setPasswordAgain] = useState("");
     const [registered, setRegistered] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
-    const userRegister = action == "register"
+    const userRegister = action === "register"
     const title = userRegister ? "Register" : "Login"
     const [snackOpen, setSnackOpen] = useState(false);
 
@@ -74,7 +74,7 @@ const LoginRegisterPage = ({
     const login = () => {
         context.authenticate(userName, password).then(res => {
             const statusCode = res?.status_code
-            if (statusCode == 401) {
+            if (statusCode === 401) {
                 setErrorMessage("Username/password incorrect")
                 setSnackOpen(true)
             } 
@@ -92,7 +92,7 @@ const LoginRegisterPage = ({
         if (password === passwordAgain) {
             context.register(userName, password).then(res => {
                 const statusCode = res?.status_code
-                if (statusCode == 201) {
+                if (statusCode === 201) {
                     setRegistered(true);
                 } else {                    
                     setErrorMessage(res?.message)
@@ -169,8 +169,8 @@ const LoginRegisterPage = ({
                                 setPassword(e.target.value);
                             }}
                         />
-                        {errors.password && errors.password.type == "required" && (<Typography className={classes.error}><WarningIcon fontSize="small" />{" Password is required"}</Typography>)}
-                        {errors.password && errors.password.type == "minLength" && (<Typography className={classes.error}><WarningIcon fontSize="small" />{` ${minPasswordLength} minimum length`}</Typography>)}
+                        {errors.password && errors.password.type === "required" && (<Typography className={classes.error}><WarningIcon fontSize="small" />{" Password is required"}</Typography>)}
+                        {errors.password && errors.password.type === "minLength" && (<Typography className={classes.error}><WarningIcon fontSize="small" />{` ${minPasswordLength} minimum length`}</Typography>)}
                         {userRegister ?
                             <>
                                 <TextField

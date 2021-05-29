@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect} from "react";
 import TemplateMoviePage from "../components/templateMoviePage";
 import { MoviesContext } from "../contexts/moviesContext";
 import { AuthContext } from "../contexts/authContext";
@@ -7,10 +7,8 @@ import { Redirect } from "react-router";
 function FavouritesPage() {
   const context = useContext(MoviesContext);
   const authContext = useContext(AuthContext);
-  // const [favourites, setFavourites] = useState()
   const { favourites, getFavourites } = context;
   const { userName, isAuthenticated } = authContext;
-  // const favouriteMovies = movies.filter((m) => m.favourite);
   const title = "Favourite Movies";  
 
   useEffect(() => {

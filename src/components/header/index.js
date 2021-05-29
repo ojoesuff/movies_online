@@ -67,7 +67,7 @@ const Header = ({ history }) => {
 
   const menuButton = (opt) => {
     return <Button
-      className={selected == opt.path ? classes.selected : ""}
+      className={selected === opt.path ? classes.selected : ""}
       key={opt.label}
       color="inherit"
       onClick={() => handleMenuSelect(opt.path)}
@@ -92,7 +92,6 @@ const Header = ({ history }) => {
           <Typography variant="h3" className={classes.title}>
             Film<span style={{ color: "red" }}>Finder</span>
           </Typography>
-          <Typography variant="h3" color="secondary">{userName}</Typography>
           {isMobile ? (
             <>
               <IconButton

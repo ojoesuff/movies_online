@@ -9,7 +9,7 @@ import IconButton from '@material-ui/core/IconButton';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import RatingBubble from "../ratingBubble";
 import img from '../../images/batman.jpg'
-import { Box, Button, CardActions, Modal, Snackbar, TextField } from '@material-ui/core';
+import { Box, Button, CardActions, Modal, Snackbar } from '@material-ui/core';
 import { red, grey } from '@material-ui/core/colors';
 import { Textfit } from 'react-textfit';
 import { getYear } from '../../utilities';
@@ -29,9 +29,6 @@ const useStyles = makeStyles((theme) => ({
     media: {
         height: 250,
     },
-    // favourite: {
-    //     color: (isFavourite) => favouriteColour(isFavourite)[500],
-    // },
     title: {
         minHeight: 80,
         maxHeight: 200,
@@ -67,12 +64,10 @@ const MovieCard = ({ movie, history }) => {
     const [isFavourite, setFavourite] = useState(false)
     const { wishlists } = wishlistContext
     
-    const snackOpenDuration = 500;
-
-    // let isFavourite = favourites?.length > 0 ? favourites.find(fav => fav._id == movie._id) ? true : false : false  
+    const snackOpenDuration = 500; 
     
     useEffect(() => {
-        setFavourite(favourites?.length > 0 ? favourites.find(fav => fav._id == movie._id) ? true : false : false )
+        setFavourite(favourites?.length > 0 ? favourites.find(fav => fav._id === movie._id) ? true : false : false )
         // eslint-disable-next-line react-hooks/exhaustive-deps
       });
 
@@ -83,8 +78,7 @@ const MovieCard = ({ movie, history }) => {
 
     const handleFavourite = (id) => {
         setFavourite(!isFavourite);
-        isFavourite ? removeFavourite(id) : addFavourite(id)        
-        // isFavourite = !isFavourite
+        isFavourite ? removeFavourite(id) : addFavourite(id)    
     }
 
     const handleWishlist = (movieId) => {
@@ -93,12 +87,10 @@ const MovieCard = ({ movie, history }) => {
 
     const addFavourite = (id) => {
         moviesContext.addToFavorites(userName,id);
-        // history.go(0)
     }
 
     const removeFavourite = (id) => {
         moviesContext.removeFromFavourites(userName, id);
-        // history.go(0)
     }
 
     const handleModalClose = () => {
@@ -113,7 +105,6 @@ const MovieCard = ({ movie, history }) => {
     const handleAddToWishlist = (wishlistId, movieId) => {
         handleSnackOpen()
         wishlistContext.addMovieToWishlist(userName, wishlistId, movieId)
-        // history.go(0)
     }
 
     const handleSnackClose = () => {

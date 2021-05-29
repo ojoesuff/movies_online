@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Badge, Checkbox, Container, FormControl, FormControlLabel, 
+import { Badge, Checkbox, Container, FormControl,
   Input, InputLabel, ListItemText, MenuItem, Select, 
   Slider, TextField } from '@material-ui/core';
 import { GenresContext } from '../../contexts/genresContext'
@@ -31,11 +31,8 @@ const FilterSideBar = (props) => {
     const [year, setYear] = useState([1917, 2021]);
     const [rating, setRating] = useState([0.0, 10.0])
     const [selectedGenres, setGenre] = useState([])
-    const [adultChecked, setAdultChecked] = useState(false);
-
 
     const handleChange = (e, type, value) => {
-      // e.preventDefault()
       props.onUserInput(type, value)
     }
     const handleTextChange = e => {
@@ -70,8 +67,7 @@ const FilterSideBar = (props) => {
               <Badge badgeContent={selectedGenres.length} className={classes.badge} color="primary">
               <InputLabel id="genre-input-label">Genre</InputLabel>
               <Select
-                className={classes.input}
-                labelId="genre-input-label"  
+                className={classes.input} 
                 autoWidth              
                 multiple
                 value={selectedGenres}
@@ -90,7 +86,6 @@ const FilterSideBar = (props) => {
             </FormControl>
             <InputLabel id="year-slider">Year</InputLabel>
             <Slider
-              labelId="year-slider"
               className={classes.input}
               value={year}
               min={props.yearRange.min}

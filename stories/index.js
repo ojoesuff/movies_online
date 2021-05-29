@@ -4,8 +4,6 @@ import RatingBubble from "../src/components/ratingBubble";
 import PageTitle from "../src/components/pageTitle";
 import Footer from "../src/components/footer";
 
-const emptyList = {}
-
 storiesOf("Movies/Rating Bubble", module)
   .add("Bad", () => {
     return <RatingBubble rating={3.5} />;

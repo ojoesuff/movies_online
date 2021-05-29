@@ -39,7 +39,7 @@ const reducer = (state, action) => {
         movies: state.movies.map((m) =>
           m.id === action.payload.movieId ? {
             ...m, wishlist_ids: [
-              ...m.wishlist_ids.filter(id => id != action.payload.wishlistId)
+              ...m.wishlist_ids.filter(id => id !== action.payload.wishlistId)
             ]
           } : m
         ),
@@ -85,29 +85,12 @@ const MoviesContextProvider = (props) => {
     });   
   };
 
-  // const isFavouriteMovie = (movieId) => {
-  //   if(favourites) {
-  //     console.log(favourites)
-  //     console.log(movieId)
-  //     return favourites.find(fav => fav._id == movieId)
-  //   }      
-  //   else
-  //     return false
-  //   // getUserFavourites(fakeUsername).then((movies) => {
-  //   //   return movies.find(m => m._id == movieId)
-  //   // });
-  // };
-
   const removeFromFavourites = (username, movieId) => {
     removeFavourite(username, movieId).then((movies) => {
       console.log(movies)
       setFavourites(movies)
     });  
   };
-
-  // const addReview = (movie, review) => {
-  //   dispatch({ type: "add-review", payload: { movie, review } });
-  // };
 
   const addReview = (movieId, review) => {
     state.movies = addMovieReview(movieId, review)
@@ -142,13 +125,6 @@ const MoviesContextProvider = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // useEffect(() => {
-  //   getUserFavourites(username).then((movies) => {
-  //     setFavourites(movies)
-  //   });
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
-
   const getFavourites = (username) => {
     getUserFavourites(username).then(movies => 
       setFavourites(movies)
@@ -169,7 +145,6 @@ const MoviesContextProvider = (props) => {
         removeFromFavourites: removeFromFavourites,
         addWishlist: addWishlist,
         removeWishlist: removeWishlist,
-        // isFavouriteMovie: isFavouriteMovie,
       }}
     >
       {props.children}

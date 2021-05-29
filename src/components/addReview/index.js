@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { withRouter } from "react-router";
 import { Box, Button, IconButton, Modal, Snackbar, TextField, Tooltip, Typography } from "@material-ui/core";
@@ -48,7 +48,6 @@ const AddReview = ({history, movie}) => {
     const handleSnackClose = e => {
         setSnackOpen(false);
         setModalOpen(false);
-        // history.replace(`/movies/${movie.id}`)
         history.go(0)
       };
 
@@ -114,7 +113,6 @@ const AddReview = ({history, movie}) => {
             variant="outlined"
             margin="normal"
             required
-            fullWidth
             name="content"
             label="Review"
             id="content"
@@ -124,8 +122,8 @@ const AddReview = ({history, movie}) => {
                 required: "Review is required",
                 minLength: minReviewLength  })}          
             />
-            {errors.content && errors.content.type == "required" && (<Typography className={classes.error}><WarningIcon fontSize="small" />{" Review is required"}</Typography>)}
-            {errors.content && errors.content.type == "minLength" && (<Typography className={classes.error}><WarningIcon fontSize="small" />{` ${minReviewLength} minimum length`}</Typography>)}
+            {errors.content && errors.content.type === "required" && (<Typography className={classes.error}><WarningIcon fontSize="small" />{" Review is required"}</Typography>)}
+            {errors.content && errors.content.type === "minLength" && (<Typography className={classes.error}><WarningIcon fontSize="small" />{` ${minReviewLength} minimum length`}</Typography>)}
             <Box>
             <Button
                 className={classes.button}

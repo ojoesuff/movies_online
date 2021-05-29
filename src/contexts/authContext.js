@@ -16,9 +16,6 @@ const AuthContextProvider = (props) => {
   }
 
   useEffect(() => {
-    // getUserWishlists(userName).then((wishlists) => {
-    //   setWishlists(wishlists);
-    // });
     if(authToken) {
       getUserFromToken(authToken).then(res => {
         if(res.username) {
@@ -52,11 +49,6 @@ const AuthContextProvider = (props) => {
     setTimeout(() => setIsAuthenticated(false), 100);
   }
 
-  // const getUsernameFromToken = (token) => {
-  //   setUserName("")
-  //   setTimeout(() => setIsAuthenticated(false), 100);
-  // }
-
   return (
     <AuthContext.Provider
       value={{
@@ -64,7 +56,6 @@ const AuthContextProvider = (props) => {
         authenticate : authenticate,
         register : register,
         signout : signout,
-        // getUsernameFromToken : getUsernameFromToken,
         userName : userName
       }}
     >

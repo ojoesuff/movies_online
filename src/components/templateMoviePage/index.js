@@ -37,6 +37,8 @@ const TemplatMoviePage = ({ movies,title  }) => {
         setYearFilter(value); break;
       case "rating":
         setRatingFilter(value); break;
+      default:
+        break;
     }
   };
 

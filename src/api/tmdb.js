@@ -1,6 +1,5 @@
 export const getMovies = () => {
   return fetch(
-    // `https://api.themoviedb.org/3/discover/movie?api_key=${process.env.REACT_APP_TMDB_KEY}&language=en-US&include_adult=false&page=1`
     `/api/movies/`
   )
     .then(res => res.json())
@@ -9,7 +8,6 @@ export const getMovies = () => {
 
 export const getTopRatedMovies = () => {
   return fetch(
-    // `https://api.themoviedb.org/3/movie/top_rated?api_key=${process.env.REACT_APP_TMDB_KEY}&language=en-US&page=1`
     `/api/movies/top-rated`
   )
     .then(res => res.json())
@@ -18,7 +16,6 @@ export const getTopRatedMovies = () => {
 
 export const getUpcomingMovies = () => {
   return fetch(
-    // `https://api.themoviedb.org/3/movie/upcoming?api_key=${process.env.REACT_APP_TMDB_KEY}&language=en-US&include_adult=false&include_video=false&page=1`
     `/api/movies/upcoming`
   )
     .then((res) => res.json())
@@ -177,17 +174,6 @@ export const signup = async (username, password) => {
   })
   return res.json();
 };
-
-// export const getUserFromToken = async (token) => {
-//   const res = await fetch('/api/users/user', {
-//       headers: {
-//           'Content-Type': 'application/json'
-//       },
-//       method: 'get',
-//       body: JSON.stringify({ token : token })
-//   })
-//   return res.json();
-// };
 
 export const getUserFromToken = async (token) => {
   return await fetch(
