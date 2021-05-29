@@ -84,7 +84,6 @@ const MovieDetail = ({ movie, history }) => {
                     <Paper className={classes.paper}>
                         <Typography className={classes.title}>{movie.original_title} {year}</Typography>
                         <Divider/>
-                        {/* <Typography className={classes.subtitle}variant="subtitle1">{movie.tagline.toUpperCase()}</Typography> */}
                         <Typography variant="body1">{movie.overview}</Typography>
                         <IconButton href={movie.homepage} target="_blank">
                             <LanguageIcon/>
@@ -94,7 +93,7 @@ const MovieDetail = ({ movie, history }) => {
                 <Grid item lg={2} md={2} sm={6} xs={6}>
                     <Paper 
                         border={2}
-                        className={classes.paper, classes.poster} 
+                        className={classes.paper} 
                         elevation={2} 
                         style={{backgroundImage:`${posterUrl}`}}>
                     </Paper>
