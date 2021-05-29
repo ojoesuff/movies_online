@@ -13,7 +13,6 @@ import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { ButtonGroup } from "@material-ui/core";
 import { AuthContext } from '../../contexts/authContext'
-import { LocalDiningOutlined } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -62,7 +61,8 @@ const Header = ({ history }) => {
   };
 
   const handleLogout = () => {
-    signout();    
+    signout(); 
+    history.push("/")   
   }
 
   const menuButton = (opt) => {
