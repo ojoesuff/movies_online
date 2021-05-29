@@ -1,5 +1,5 @@
-import React, { useState, createContext } from "react";
-import { login, signup } from "../api/tmdb";
+import React, { useState, createContext, useEffect } from "react";
+import { login, signup, getUserFromToken } from "../api/tmdb";
 
 export const AuthContext = createContext(null);
 
@@ -14,6 +14,21 @@ const AuthContextProvider = (props) => {
     localStorage.setItem("token", data);
     setAuthToken(data);
   }
+
+  useEffect(() => {
+    // getUserWishlists(userName).then((wishlists) => {
+    //   setWishlists(wishlists);
+    // });
+    if(authToken) {
+      getUserFromToken(authToken).then(res => {
+        if(res.username) {
+          setUserName(res.username)
+          setIsAuthenticated(true)
+        }
+      })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const authenticate = async (username, password) => {
     const result = await login(username, password);
@@ -33,8 +48,14 @@ const AuthContextProvider = (props) => {
 
   const signout = () => {
     setUserName("")
+    localStorage.removeItem("token")
     setTimeout(() => setIsAuthenticated(false), 100);
   }
+
+  // const getUsernameFromToken = (token) => {
+  //   setUserName("")
+  //   setTimeout(() => setIsAuthenticated(false), 100);
+  // }
 
   return (
     <AuthContext.Provider
@@ -43,6 +64,7 @@ const AuthContextProvider = (props) => {
         authenticate : authenticate,
         register : register,
         signout : signout,
+        // getUsernameFromToken : getUsernameFromToken,
         userName : userName
       }}
     >

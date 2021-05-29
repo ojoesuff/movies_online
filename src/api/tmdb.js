@@ -177,3 +177,24 @@ export const signup = async (username, password) => {
   })
   return res.json();
 };
+
+// export const getUserFromToken = async (token) => {
+//   const res = await fetch('/api/users/user', {
+//       headers: {
+//           'Content-Type': 'application/json'
+//       },
+//       method: 'get',
+//       body: JSON.stringify({ token : token })
+//   })
+//   return res.json();
+// };
+
+export const getUserFromToken = async (token) => {
+  return await fetch(
+    `/api/users/${token}`
+  )
+    .then((res) => res.json())
+    .then((json) => {
+      return json
+    });
+};
