@@ -62,7 +62,8 @@ const Header = ({ history }) => {
 
   const handleLogout = () => {
     signout(); 
-    history.push("/")   
+    // history.push("/")  
+    history.go(); 
   }
 
   const menuButton = (opt) => {
